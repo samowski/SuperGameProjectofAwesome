@@ -8,16 +8,17 @@ public class CloudSystem : MonoBehaviour
     List<SpriteRenderer> spriteRenderers;
     public Sprite[] cloudSprites;
 
+	GameObject baseCloud;
+
     int leftIndex;
     int rightIndex;
-    int maxSpriteWidth;
+
+    float maxSpriteWidth;
     float maxSpriteHeight;
+
     float cellWidth = 1.0f;
-
-    GameObject baseCloud;
-
-    int randomIndexOffset;
-
+    
+	int randomIndexOffset;
     float moveDistance = 0;
 
     public float maxHeight;
@@ -91,10 +92,8 @@ public class CloudSystem : MonoBehaviour
         float left = cameraPosition - halfCameraWidth;
         float right = cameraPosition + halfCameraWidth;
 
-        leftIndex = Mathf.FloorToInt((left - maxSpriteWidth) / cellWidth);
-        leftIndex += left < 0.0f ? -1 : -1;
-        rightIndex = Mathf.FloorToInt((right + maxSpriteWidth) / cellWidth);
-        rightIndex += right < 0.0f ? 1 : 1;
+        leftIndex = Mathf.FloorToInt((left - maxSpriteWidth) / cellWidth) - 1;
+        rightIndex = Mathf.FloorToInt((right + maxSpriteWidth) / cellWidth) + 1;
     }
 
     void generateClouds()
@@ -127,7 +126,8 @@ public class CloudSystem : MonoBehaviour
     {
         moveDistance += Time.deltaTime * speed;
         moveDistance %= 50000.0f;
-        cellWidth =  cloudsPerUnit == 0.0f ? 0.0f : Mathf.Abs(1.0f / cloudsPerUnit);
+        
+		cellWidth =  cloudsPerUnit == 0.0f ? 0.0f : Mathf.Abs(1.0f / cloudsPerUnit);
 
         getBorderIndices();
         
