@@ -1,9 +1,29 @@
 fileFormatVersion: 2
-guid: 81cab879e80eaf94f9fcd4d2ab73ae76
-timeCreated: 1448710893
+guid: 5ca0d7c9a0e959045945f02982ee7235
+timeCreated: 1449582627
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Boy_0
+    21300002: RightCalf
+    21300004: Head
+    21300006: UpperArm
+    21300008: Boy_4
+    21300010: LeftCalf
+    21300012: Body
+    21300014: Boy_7
+    21300016: Boy_8
+    21300018: Boy_9
+    21300020: RightFoot
+    21300022: LeftFoot
+    21300024: Boy_12
+    21300026: Hip
+    21300028: RightLowerArm
+    21300030: LeftLowerArm
+    21300032: RightThigh
+    21300034: LeftThigh
+    21300036: RightHand
+    21300038: LeftHand
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,15 +50,14 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
   rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +68,207 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: Boy_0
+      rect:
+        serializedVersion: 2
+        x: 2314
+        y: 4994
+        width: 32
+        height: 4
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: RightCalf
+      rect:
+        serializedVersion: 2
+        x: 2401
+        y: 3798
+        width: 628
+        height: 1202
+      alignment: 2
+      pivot: {x: .5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Head
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 3593
+        width: 1186
+        height: 1342
+      alignment: 9
+      pivot: {x: .359383762, y: .150489226}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: UpperArm
+      rect:
+        serializedVersion: 2
+        x: 1444
+        y: 3822
+        width: 855
+        height: 967
+      alignment: 9
+      pivot: {x: .243992135, y: .758693099}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Boy_4
+      rect:
+        serializedVersion: 2
+        x: 3229
+        y: 3971
+        width: 7
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: LeftCalf
+      rect:
+        serializedVersion: 2
+        x: 3236
+        y: 3961
+        width: 613
+        height: 982
+      alignment: 2
+      pivot: {x: .5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Body
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 1769
+        width: 1380
+        height: 1716
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Boy_7
+      rect:
+        serializedVersion: 2
+        x: 2401
+        y: 2396
+        width: 929
+        height: 1323
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Boy_8
+      rect:
+        serializedVersion: 2
+        x: 3405
+        y: 2408
+        width: 989
+        height: 1387
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Boy_9
+      rect:
+        serializedVersion: 2
+        x: 2577
+        y: 2372
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: RightFoot
+      rect:
+        serializedVersion: 2
+        x: 2494
+        y: 1896
+        width: 787
+        height: 432
+      alignment: 9
+      pivot: {x: .261604279, y: .644765794}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: LeftFoot
+      rect:
+        serializedVersion: 2
+        x: 3458
+        y: 1871
+        width: 843
+        height: 420
+      alignment: 9
+      pivot: {x: .240347609, y: .673719406}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Boy_12
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 128
+        width: 1354
+        height: 1555
+      alignment: 9
+      pivot: {x: .546188235, y: .781526148}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Hip
+      rect:
+        serializedVersion: 2
+        x: 1559
+        y: 1193
+        width: 1308
+        height: 598
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: RightLowerArm
+      rect:
+        serializedVersion: 2
+        x: 3073
+        y: 651
+        width: 741
+        height: 954
+      alignment: 9
+      pivot: {x: .274938256, y: .926104605}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: LeftLowerArm
+      rect:
+        serializedVersion: 2
+        x: 4052
+        y: 682
+        width: 747
+        height: 972
+      alignment: 9
+      pivot: {x: .290699244, y: .89676708}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: RightThigh
+      rect:
+        serializedVersion: 2
+        x: 1539
+        y: 84
+        width: 740
+        height: 972
+      alignment: 2
+      pivot: {x: .5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: LeftThigh
+      rect:
+        serializedVersion: 2
+        x: 2282
+        y: 74
+        width: 668
+        height: 975
+      alignment: 2
+      pivot: {x: .5, y: 1}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: RightHand
+      rect:
+        serializedVersion: 2
+        x: 3418
+        y: 36
+        width: 594
+        height: 593
+      alignment: 9
+      pivot: {x: .324524939, y: .781232476}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: LeftHand
+      rect:
+        serializedVersion: 2
+        x: 4345
+        y: 16
+        width: 522
+        height: 617
+      alignment: 9
+      pivot: {x: .400160521, y: .736506522}
+      border: {x: 0, y: 0, z: 0, w: 0}
   spritePackingTag: 
   userData: 
   assetBundleName: 

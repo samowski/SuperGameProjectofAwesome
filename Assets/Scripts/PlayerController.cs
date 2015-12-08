@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     //Body, Animator and LookDirection
     [HideInInspector]
     public bool IsLookingRight = true;
-    private Rigidbody2D rigidbody2D;
+    private Rigidbody2D myRigidbody2D;
     private Animator animator;
 
     private bool shouldAttack = false;
@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        rigidbody2D = GetComponent<Rigidbody2D>();
+        myRigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
     }
 
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     {
         float hor = Input.GetAxis("Horizontal");
 
-        rigidbody2D.velocity = new Vector2(hor * MaxSpeed, rigidbody2D.velocity.y);
+        myRigidbody2D.velocity = new Vector2(hor * MaxSpeed, myRigidbody2D.velocity.y);
 
         animator.SetFloat("Speed", Mathf.Abs(hor));
 
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
         if (shouldJump)
         {
-            rigidbody2D.AddForce(new Vector2(0, JumpForce));
+            myRigidbody2D.AddForce(new Vector2(0, JumpForce));
             shouldJump = false;
         }
 
@@ -83,9 +83,14 @@ public class PlayerController : MonoBehaviour
         myScale.x *= -1;
         transform.localScale = myScale;
     }
-
-    void ChangeAttackState()
-    {
-        IsAttacking = !IsAttacking;
-    }
+	
+	void ChangeAttackTrue()
+	{
+		IsAttacking = true;
+	}
+	void ChangeAttackFalse()
+	{
+    Debug.Log("Ist hier drin");
+		IsAttacking = false;
+	}
 }
