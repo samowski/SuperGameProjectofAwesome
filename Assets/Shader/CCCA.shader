@@ -1,4 +1,5 @@
-﻿Shader "Custom/CCCA"
+﻿//maps RGB to custom colors
+Shader "Sprites/CCCA"
 {
 	Properties
 	{

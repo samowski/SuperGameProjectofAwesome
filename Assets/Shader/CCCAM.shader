@@ -1,4 +1,5 @@
-﻿Shader "Custom/CCCAM"
+﻿// maps RGB to custom colors unless masked then normal colors
+Shader "Sprites/CCCAM"
 {
 	Properties
 	{

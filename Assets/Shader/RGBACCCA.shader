@@ -1,4 +1,5 @@
-﻿Shader "Custom/RGBACCCA"
+﻿// lays a texture with RGB to custom color mapping over a normal texture
+Shader "Sprites/RGBACCCA"
 {
 	Properties
 	{
