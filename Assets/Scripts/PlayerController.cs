@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     //Velocity
     public float MaxSpeed = 4;
     public float JumpForce = 550;
+    public bool IsSlowed = false;
 
     //GoundDetection
     public Transform GroundCheck;
@@ -90,7 +91,6 @@ public class PlayerController : MonoBehaviour
 	}
 	void ChangeAttackFalse()
 	{
-    Debug.Log("Ist hier drin");
 		IsAttacking = false;
 	}
 }

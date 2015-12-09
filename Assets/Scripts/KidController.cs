@@ -1,17 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemyBehaviour : MonoBehaviour
+public class KidController : MonoBehaviour
 {
-    public float MaxSpeed = 9;
-    //private float CurrentSpeed;
-    private float ViewRange = 35;
-
-    public bool ShouldWalkItself = false;
-    public bool IsUnconscious = false;
-    public bool IsBlocking = false;
-
-    private float StartX;
+    public float MaxSpeed = 7;
+    private float ViewRange = 105;
+    public bool HasChocolate = false;
 
     public GameObject LArm;
     public GameObject RArm;
@@ -36,40 +30,43 @@ public class EnemyBehaviour : MonoBehaviour
         AnglesRArm = RArm.GetComponent<SimpleCCD>();
         AnglesLFoot = LFoot.GetComponent<SimpleCCD>();
         AnglesRFoot = RFoot.GetComponent<SimpleCCD>();
-        StartX = transform.localPosition.x;
         myRigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+    }
+
+    void Update()
+    {
+        if (animator.GetBool("Grab") == true)
+        {
+            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 12;
+            MaxSpeed = 4;
+            ChasedObject.GetComponent<PlayerController>().IsSlowed = true;
+        }
+        else if (animator.GetBool("Grab") == false)
+        {
+            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
+            MaxSpeed = 7;
+            ChasedObject.GetComponent<PlayerController>().IsSlowed = false;
+        }
+        if (HasChocolate)
+        {
+            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
+        }
     }
 
     void FixedUpdate()
     {
 
-        if (!IsUnconscious)
+        CalculateDistance();
+
+        WalkController();
+
+        animator.SetFloat("Speed", Mathf.Abs(myRigidbody2D.velocity.x));
+
+        if ((myRigidbody2D.velocity.x > 0 && !IsLookingRight) || (myRigidbody2D.velocity.x < 0 && IsLookingRight))
         {
-            if (!IsBlocking)
-            {
-                CalculateDistance();
-
-                WalkController();
-
-                animator.SetFloat("Speed", Mathf.Abs(myRigidbody2D.velocity.x));
-
-                if ((myRigidbody2D.velocity.x > 0 && !IsLookingRight) || (myRigidbody2D.velocity.x < 0 && IsLookingRight))
-                {
-                    Flip();
-                }
-            }
-            else
-            {
-                myRigidbody2D.velocity = new Vector2(0, 0);
-            }
+            Flip();
         }
-        else
-        {
-            myRigidbody2D.velocity = new Vector2(0, 0);
-            animator.SetTrigger("Unconscious");
-        }
-        //CurrentSpeed = myRigidbody2D.velocity.x;
     }
 
     void CalculateDistance()
@@ -86,17 +83,9 @@ public class EnemyBehaviour : MonoBehaviour
 
     void WalkController()
     {
-        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) > 2)
+        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) > 2 && !HasChocolate)
         {
             Chasing();
-        }
-        else if (ShouldWalkItself)
-        {
-            if (transform.localPosition.x - StartX > 20 || transform.localPosition.x - StartX < -20)
-            {
-                Flip();
-            }
-            WalkInPattern(IsLookingRight);
         }
         else
         {
@@ -107,29 +96,23 @@ public class EnemyBehaviour : MonoBehaviour
     void Chasing()
     {
         myRigidbody2D.velocity = new Vector2(distanceToGranny < 0 ? MaxSpeed * 3 : -MaxSpeed * 3, myRigidbody2D.velocity.y);
-        ShouldWalkItself = false;
         if (Mathf.Abs(distanceToGranny) < 5)
         {
-                animator.SetTrigger("Catch");
+            animator.SetBool("Grab", true);
+        }
+        else
+        {
+            animator.SetBool("Grab", false);
         }
     }
-
-    void WalkInPattern(bool direction)
-    {
-        myRigidbody2D.velocity = new Vector2(direction ? MaxSpeed : -MaxSpeed, myRigidbody2D.velocity.y);
-    }
-
     void Flip()
     {
         IsLookingRight = !IsLookingRight;
 
-		/*Vector3 myScale = transform.localScale;
-		myScale.x *= -1;
-		transform.localScale = myScale;*/
-
         Vector3 myAngles = transform.localEulerAngles;
         myAngles.y += 180;
         transform.localEulerAngles = myAngles;
+
         if (!IsLookingRight)
         {
             AnglesLArm.angleLimits[0].min = 210;
@@ -152,20 +135,5 @@ public class EnemyBehaviour : MonoBehaviour
             AnglesRFoot.angleLimits[0].min = 250;
             AnglesRFoot.angleLimits[0].max = 360;
         }
-    }
-
-    void SetUnconscious()
-    {
-        IsUnconscious = true;
-    }
-
-    void SetBlocking()
-    {
-        IsBlocking = true;
-    }
-
-    void UnsetBlocking()
-    {
-        IsBlocking = false;
     }
 }
