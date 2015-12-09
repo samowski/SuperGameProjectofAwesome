@@ -5,6 +5,7 @@ public class EnemyBehaviour : MonoBehaviour
 {
     public float MaxSpeed = 9;
     public float CurrentSpeed;
+    private float ViewRange = 35;
 
     public bool ShouldWalkItself = false;
     public bool IsUnconscious = false;
@@ -16,10 +17,10 @@ public class EnemyBehaviour : MonoBehaviour
     public GameObject RArm;
     public GameObject LFoot;
     public GameObject RFoot;
-    public SimpleCCD AnglesLArm;
-    public SimpleCCD AnglesRArm;
-    public SimpleCCD AnglesLFoot;
-    public SimpleCCD AnglesRFoot;
+    private SimpleCCD AnglesLArm;
+    private SimpleCCD AnglesRArm;
+    private SimpleCCD AnglesLFoot;
+    private SimpleCCD AnglesRFoot;
 
     [HideInInspector]
     public bool IsLookingRight = true;
@@ -31,6 +32,10 @@ public class EnemyBehaviour : MonoBehaviour
 
     void Start()
     {
+        if (gameObject.tag == "Kid")
+        {
+            ViewRange = 105;
+        }
         AnglesLArm = LArm.GetComponent<SimpleCCD>();
         AnglesRArm = RArm.GetComponent<SimpleCCD>();
         AnglesLFoot = LFoot.GetComponent<SimpleCCD>();
@@ -38,6 +43,18 @@ public class EnemyBehaviour : MonoBehaviour
         StartX = transform.localPosition.x;
         myRigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+    }
+
+    void Update()
+    {
+        if(gameObject.tag == "Kid" && animator.GetBool("Grab")==true)
+        {
+            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 12;
+        }
+        else if(gameObject.tag == "Kid" && animator.GetBool("Grab") == false)
+        {
+            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
+        }
     }
 
     void FixedUpdate()
@@ -85,7 +102,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     void WalkController()
     {
-        if (Mathf.Abs(distanceToGranny) < 35)
+        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) > 2)
         {
             Chasing();
         }
@@ -110,6 +127,11 @@ public class EnemyBehaviour : MonoBehaviour
         if (Mathf.Abs(distanceToGranny) < 5)
         {
             animator.SetTrigger("Catch");
+            animator.SetBool("Grab", true);
+        }
+        else
+        {
+            animator.SetBool("Grab", false);
         }
     }
 
