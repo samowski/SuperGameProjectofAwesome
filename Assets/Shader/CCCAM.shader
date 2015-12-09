@@ -3,9 +3,9 @@ Shader "Sprites/CCCAM"
 {
 	Properties
 	{
-		[PerRendererData] _ColorR ("R Color", Color) = (1,1,1,1)
-		[PerRendererData] _ColorG ("G Color", Color) = (1,1,1,1)
-		[PerRendererData] _ColorB ("B Color", Color) = (1,1,1,1)
+		_ColorR ("R Color", Color) = (1,1,1,1)
+		_ColorG ("G Color", Color) = (1,1,1,1)
+		_ColorB ("B Color", Color) = (1,1,1,1)
 		[PerRendererData] _MainTex ("Texture", 2D) = "white" {}
 		_MaskTex ("Mask", 2D) = "white" {}
 	}
