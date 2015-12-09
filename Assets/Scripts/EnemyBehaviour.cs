@@ -50,10 +50,12 @@ public class EnemyBehaviour : MonoBehaviour
         if(gameObject.tag == "Kid" && animator.GetBool("Grab")==true)
         {
             ChasedObject.GetComponent<PlayerController>().MaxSpeed = 12;
+            MaxSpeed = 4;
         }
         else if(gameObject.tag == "Kid" && animator.GetBool("Grab") == false)
         {
             ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
+            MaxSpeed = 7;
         }
     }
 
