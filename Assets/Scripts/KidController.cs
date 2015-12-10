@@ -3,6 +3,7 @@ using System.Collections;
 
 public class KidController : MonoBehaviour
 {
+    #region Variables
     public float MaxSpeed = 8;
     private float ViewRange = 105;
     public bool HasChocolate = false;
@@ -23,6 +24,7 @@ public class KidController : MonoBehaviour
 
     public Transform ChasedObject;
     public float distanceToGranny;
+    #endregion
 
     void Start()
     {
@@ -36,22 +38,29 @@ public class KidController : MonoBehaviour
 
     void Update()
     {
-        if (animator.GetBool("Grab") == true)
-        {
-            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 12;
-            MaxSpeed = 4;
-            ChasedObject.GetComponent<PlayerController>().IsSlowed = true;
-            ChasedObject.GetComponent<PlayerController>().kidCollider = GetComponent<Collider2D>();
-        }
-        else if (animator.GetBool("Grab") == false)
-        {
-            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
-            MaxSpeed = 8;
-            ChasedObject.GetComponent<PlayerController>().IsSlowed = false;
-        }
         if (HasChocolate)
         {
+            animator.SetBool("Grab", false);
+            animator.SetBool("HasChocolate", true);
             ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
+        }
+        else
+        {
+            if (animator.GetBool("Grab") == true)
+            {
+                ChasedObject.GetComponent<PlayerController>().MaxSpeed = 12;
+                MaxSpeed = 4;
+                ChasedObject.GetComponent<PlayerController>().IsSlowed = true;
+                ChasedObject.GetComponent<ItemUse>().slowCollider = GetComponent<Collider2D>();
+            }
+            else
+            {
+                ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
+                MaxSpeed = 8;
+                ChasedObject.GetComponent<PlayerController>().IsSlowed = false;
+                ChasedObject.GetComponent<ItemUse>().slowCollider = null;
+
+            }
         }
     }
 

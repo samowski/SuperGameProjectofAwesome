@@ -133,9 +133,9 @@ public class EnemyBehaviour : MonoBehaviour
         if (!IsLookingRight)
         {
             AnglesLArm.angleLimits[0].min = 210;
-            AnglesLArm.angleLimits[0].max = 360;
+            AnglesLArm.angleLimits[0].max = 358;
             AnglesRArm.angleLimits[0].min = 210;
-            AnglesRArm.angleLimits[0].max = 360;
+            AnglesRArm.angleLimits[0].max = 358;
             AnglesLFoot.angleLimits[0].min = 0;
             AnglesLFoot.angleLimits[0].max = 90;
             AnglesRFoot.angleLimits[0].min = 0;
@@ -148,9 +148,9 @@ public class EnemyBehaviour : MonoBehaviour
             AnglesRArm.angleLimits[0].min = 0;
             AnglesRArm.angleLimits[0].max = 150;
             AnglesLFoot.angleLimits[0].min = 250;
-            AnglesLFoot.angleLimits[0].max = 360;
+            AnglesLFoot.angleLimits[0].max = 358;
             AnglesRFoot.angleLimits[0].min = 250;
-            AnglesRFoot.angleLimits[0].max = 360;
+            AnglesRFoot.angleLimits[0].max = 358;
         }
     }
 

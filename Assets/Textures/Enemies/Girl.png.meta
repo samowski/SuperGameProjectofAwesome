@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 5fb0b08e32624e547957888c7a04a4bb
-timeCreated: 1449761051
+timeCreated: 1449780976
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -185,7 +185,7 @@ TextureImporter:
         width: 320
         height: 467
       alignment: 9
-      pivot: {x: .576988995, y: .882474244}
+      pivot: {x: .557741523, y: 1.08030558}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: LeftThigh
       rect:
@@ -195,7 +195,7 @@ TextureImporter:
         width: 305
         height: 502
       alignment: 9
-      pivot: {x: .60096854, y: .892615795}
+      pivot: {x: .60096854, y: 1.06438506}
       border: {x: 0, y: 0, z: 0, w: 0}
     - name: RightCalf
       rect:

@@ -6,7 +6,6 @@ public class ItemUse : MonoBehaviour
     public bool IsHoldingPill = false;
     public bool IsHoldingChocolate = false;
     public GameObject ChocolatePrefab;
-    public Transform spawnpoint;
 
     public Collider2D slowCollider;
 
@@ -14,6 +13,7 @@ public class ItemUse : MonoBehaviour
     {
         if (Input.GetButton("Fire3") && (IsHoldingChocolate||IsHoldingPill))
         {
+
             UseItem();
         }
     }
@@ -29,7 +29,6 @@ public class ItemUse : MonoBehaviour
         {
             IsHoldingChocolate = false;
 
-            slowCollider = gameObject.GetComponent<PlayerController>().kidCollider;
             Vector3 temppos = slowCollider.transform.position;
             if (slowCollider.GetComponent<KidController>().IsLookingRight)
             {
@@ -40,7 +39,7 @@ public class ItemUse : MonoBehaviour
                 temppos.x -= 4;
             }
             GameObject chocolate1 = (GameObject)Instantiate(ChocolatePrefab, temppos, Quaternion.identity);
-            GameObject.Find("Boy").GetComponent<KidController>().HasChocolate = true;
+            slowCollider.GetComponent<KidController>().HasChocolate = true;
         }
         else if (IsHoldingPill)
         {

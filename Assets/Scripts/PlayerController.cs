@@ -8,8 +8,6 @@ public class PlayerController : MonoBehaviour
     public float JumpForce = 550;
     public bool IsSlowed = false;
 
-    public Collider2D kidCollider;
-
     //GoundDetection
     public Transform GroundCheck;
     public LayerMask WhatIsGround;
