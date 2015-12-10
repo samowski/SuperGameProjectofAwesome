@@ -7,7 +7,8 @@ public class ItemUse : MonoBehaviour
     public bool IsHoldingChocolate = false;
     public GameObject ChocolatePrefab;
     public Transform spawnpoint;
-    public Vector3 temp;
+
+    public Collider2D slowCollider;
 
     void FixedUpdate()
     {
@@ -24,24 +25,26 @@ public class ItemUse : MonoBehaviour
 
     public void UseItem()
     {
-        if (IsHoldingChocolate && GameObject.Find("Granny").GetComponent<PlayerController>().IsSlowed)
+        if (GetComponent<PlayerController>().IsSlowed)
         {
-            CalculateSpawnpoint();
             IsHoldingChocolate = false;
 
-            GameObject chocolate1 = (GameObject)Instantiate(ChocolatePrefab, temp, Quaternion.identity);
+            slowCollider = gameObject.GetComponent<PlayerController>().kidCollider;
+            Vector3 temppos = slowCollider.transform.position;
+            if (slowCollider.GetComponent<KidController>().IsLookingRight)
+            {
+                temppos.x += 4;
+            }
+            else
+            {
+                temppos.x -= 4;
+            }
+            GameObject chocolate1 = (GameObject)Instantiate(ChocolatePrefab, temppos, Quaternion.identity);
             GameObject.Find("Boy").GetComponent<KidController>().HasChocolate = true;
         }
         else if (IsHoldingPill)
         {
 
         }
-    }
-
-    void CalculateSpawnpoint()
-    {
-        temp = spawnpoint.position;
-        temp.x += (float)1.5;
-        temp.y += -1;
     }
 }

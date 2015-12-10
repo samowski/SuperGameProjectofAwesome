@@ -3,7 +3,7 @@ using System.Collections;
 
 public class KidController : MonoBehaviour
 {
-    public float MaxSpeed = 7;
+    public float MaxSpeed = 8;
     private float ViewRange = 105;
     public bool HasChocolate = false;
 
@@ -41,11 +41,12 @@ public class KidController : MonoBehaviour
             ChasedObject.GetComponent<PlayerController>().MaxSpeed = 12;
             MaxSpeed = 4;
             ChasedObject.GetComponent<PlayerController>().IsSlowed = true;
+            ChasedObject.GetComponent<PlayerController>().kidCollider = GetComponent<Collider2D>();
         }
         else if (animator.GetBool("Grab") == false)
         {
             ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
-            MaxSpeed = 7;
+            MaxSpeed = 8;
             ChasedObject.GetComponent<PlayerController>().IsSlowed = false;
         }
         if (HasChocolate)
@@ -56,7 +57,6 @@ public class KidController : MonoBehaviour
 
     void FixedUpdate()
     {
-
         CalculateDistance();
 
         WalkController();
