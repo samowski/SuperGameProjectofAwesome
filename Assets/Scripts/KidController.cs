@@ -8,6 +8,10 @@ public class KidController : MonoBehaviour
     private float ViewRange = 105;
     public bool HasChocolate = false;
 
+    public static int AmountOfKids = 0;
+    public static int AmountOfSlows = 0;
+    public static int AmountOfRunthroughs = 0;
+
     public GameObject LArm;
     public GameObject RArm;
     public GameObject LFoot;
@@ -28,6 +32,7 @@ public class KidController : MonoBehaviour
 
     void Start()
     {
+        AmountOfKids += 1;
         AnglesLArm = LArm.GetComponent<SimpleCCD>();
         AnglesRArm = RArm.GetComponent<SimpleCCD>();
         AnglesLFoot = LFoot.GetComponent<SimpleCCD>();
@@ -36,38 +41,14 @@ public class KidController : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void Update()
-    {
-        if (HasChocolate)
-        {
-            animator.SetBool("Grab", false);
-            animator.SetBool("HasChocolate", true);
-            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
-        }
-        else
-        {
-            if (animator.GetBool("Grab") == true)
-            {
-                ChasedObject.GetComponent<PlayerController>().MaxSpeed = 12;
-                MaxSpeed = 4;
-                ChasedObject.GetComponent<PlayerController>().IsSlowed = true;
-                ChasedObject.GetComponent<ItemUse>().slowCollider = GetComponent<Collider2D>();
-            }
-            else
-            {
-                ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
-                MaxSpeed = 8;
-                ChasedObject.GetComponent<PlayerController>().IsSlowed = false;
-                ChasedObject.GetComponent<ItemUse>().slowCollider = null;
-
-            }
-        }
-    }
-
     void FixedUpdate()
     {
-        CalculateDistance();
+        AmountOfRunthroughs++;
+        AmountOfSlows = AmountOfKids;
+        Debug.Log("Vorher: " + AmountOfSlows);
 
+        //For Walking
+        CalculateDistance();
         WalkController();
 
         animator.SetFloat("Speed", Mathf.Abs(myRigidbody2D.velocity.x));
@@ -76,7 +57,43 @@ public class KidController : MonoBehaviour
         {
             Flip();
         }
-    }
+
+
+        //For Slowing   
+        if (HasChocolate)
+        {
+            animator.SetBool("Grab", false);
+            animator.SetBool("HasChocolate", true);
+            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
+        }
+        else
+        {
+            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
+            MaxSpeed = 8;
+            ChasedObject.GetComponent<PlayerController>().IsSlowed = false;
+            ChasedObject.GetComponent<ItemUse>().slowCollider = null;
+            ChasedObject.GetComponent<PlayerController>().JumpForce = 2200;
+
+            if (AmountOfSlows == 1)
+            {
+                ChasedObject.GetComponent<PlayerController>().MaxSpeed = 12;
+                MaxSpeed = 4;
+                ChasedObject.GetComponent<PlayerController>().IsSlowed = true;
+                ChasedObject.GetComponent<ItemUse>().slowCollider = GetComponent<Collider2D>();
+                ChasedObject.GetComponent<PlayerController>().JumpForce = 2200;
+            }
+            else if (AmountOfSlows > 1)
+            {
+                ChasedObject.GetComponent<PlayerController>().MaxSpeed = 12;
+                MaxSpeed = 4;
+                ChasedObject.GetComponent<PlayerController>().IsSlowed = true;
+                ChasedObject.GetComponent<ItemUse>().slowCollider = GetComponent<Collider2D>();
+                ChasedObject.GetComponent<PlayerController>().JumpForce = 1100;
+            }
+        }
+
+        Debug.Log("Nachher: " + AmountOfSlows);
+    }  
 
     void CalculateDistance()
     {
@@ -107,11 +124,14 @@ public class KidController : MonoBehaviour
         myRigidbody2D.velocity = new Vector2(distanceToGranny < 0 ? MaxSpeed * 3 : -MaxSpeed * 3, myRigidbody2D.velocity.y);
         if (Mathf.Abs(distanceToGranny) < 5)
         {
+            Debug.Log("Mitte1: " + AmountOfSlows);
             animator.SetBool("Grab", true);
         }
         else
         {
+            Debug.Log("Mitte2: " + AmountOfSlows);
             animator.SetBool("Grab", false);
+            AmountOfSlows--;
         }
     }
     void Flip()
