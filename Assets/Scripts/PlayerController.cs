@@ -97,14 +97,12 @@ public class PlayerController : MonoBehaviour
     public void CalculateSlow(int amountOfSlows, GameObject kid)
     {
         MaxSpeed = 20;
-        kid.GetComponent<KidController>().MaxSpeed = 8;
         IsSlowed = false;
         JumpForce = 2200;
 
         if (amountOfSlows > 1)
         {
             MaxSpeed = 12;
-            kid.GetComponent<KidController>().MaxSpeed = 4;
             IsSlowed = true;
             JumpForce = 1100;
         }
@@ -113,7 +111,6 @@ public class PlayerController : MonoBehaviour
             if (amountOfSlows == 1)
             {
                 MaxSpeed = 12;
-                kid.GetComponent<KidController>().MaxSpeed = 4;
                 IsSlowed = true;
                 JumpForce = 2200;
             }

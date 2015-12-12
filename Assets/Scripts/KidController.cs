@@ -96,12 +96,14 @@ public class KidController : MonoBehaviour
         if (Mathf.Abs(distanceToGranny) < 5)
         {
             animator.SetBool("Grab", true);
+            MaxSpeed = 4;
             AmountOfSlows++;
             ChasedObject.GetComponent<ItemUse>().slowCollider = GetComponent<Collider2D>();
         }
         else
         {
             animator.SetBool("Grab", false);
+            MaxSpeed = 8;
         }
     }
 
