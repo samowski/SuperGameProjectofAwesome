@@ -13,7 +13,6 @@ public class ItemUse : MonoBehaviour
     {
         if (Input.GetButton("Fire3") && (IsHoldingChocolate||IsHoldingPill))
         {
-
             UseItem();
         }
     }

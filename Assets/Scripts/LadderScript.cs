@@ -13,9 +13,20 @@ public class LadderScript : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (Input.GetButton("Jump") && GetComponent< Collider2D>().IsTouchingLayers(LayerMask.GetMask("Ladder")))
+        if (GetComponent<Collider2D>().IsTouchingLayers(LayerMask.GetMask("Ladder")))
         {
-            myridigdbody.velocity = new Vector3(myridigdbody.velocity.x, ClimbSpeed, myridigdbody.velocity.y);
+            myridigdbody.velocity = new Vector3(myridigdbody.velocity.x, 0.79f);
+            if (Input.GetButton("Jump"))
+            {
+                myridigdbody.velocity = new Vector3(myridigdbody.velocity.x, ClimbSpeed, myridigdbody.velocity.y);
+            }
+            else
+            {
+                if(Input.GetButton("Fire2"))
+                {
+                    myridigdbody.velocity = new Vector3(myridigdbody.velocity.x, -ClimbSpeed, myridigdbody.velocity.y);
+                }
+            }
         }
     } 
 }

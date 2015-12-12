@@ -3,6 +3,7 @@ using System.Collections;
 
 public class KidController : MonoBehaviour
 {
+
     #region Variables
     public float MaxSpeed = 8;
     private float ViewRange = 105;
@@ -32,7 +33,7 @@ public class KidController : MonoBehaviour
 
     void Start()
     {
-        AmountOfKids += 1;
+        AmountOfKids++;
         AnglesLArm = LArm.GetComponent<SimpleCCD>();
         AnglesRArm = RArm.GetComponent<SimpleCCD>();
         AnglesLFoot = LFoot.GetComponent<SimpleCCD>();
@@ -44,56 +45,65 @@ public class KidController : MonoBehaviour
     void FixedUpdate()
     {
         AmountOfRunthroughs++;
-        AmountOfSlows = AmountOfKids;
-        Debug.Log("Vorher: " + AmountOfSlows);
 
-        //For Walking
-        CalculateDistance();
-        WalkController();
-
-        animator.SetFloat("Speed", Mathf.Abs(myRigidbody2D.velocity.x));
-
-        if ((myRigidbody2D.velocity.x > 0 && !IsLookingRight) || (myRigidbody2D.velocity.x < 0 && IsLookingRight))
-        {
-            Flip();
-        }
-
-
-        //For Slowing   
+        //HoldsChocolate -> Stop
         if (HasChocolate)
         {
             animator.SetBool("Grab", false);
             animator.SetBool("HasChocolate", true);
-            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
+            animator.SetFloat("Speed", 0);
+            myRigidbody2D.velocity = new Vector2(0, 0);
         }
         else
         {
-            ChasedObject.GetComponent<PlayerController>().MaxSpeed = 20;
-            MaxSpeed = 8;
-            ChasedObject.GetComponent<PlayerController>().IsSlowed = false;
-            ChasedObject.GetComponent<ItemUse>().slowCollider = null;
-            ChasedObject.GetComponent<PlayerController>().JumpForce = 2200;
+            //Walking
+            GrabControl();
+            CalculateDistance();
+            WalkController();
 
-            if (AmountOfSlows == 1)
+            animator.SetFloat("Speed", Mathf.Abs(myRigidbody2D.velocity.x));
+            if ((myRigidbody2D.velocity.x > 0 && !IsLookingRight) || (myRigidbody2D.velocity.x < 0 && IsLookingRight))
             {
-                ChasedObject.GetComponent<PlayerController>().MaxSpeed = 12;
-                MaxSpeed = 4;
-                ChasedObject.GetComponent<PlayerController>().IsSlowed = true;
-                ChasedObject.GetComponent<ItemUse>().slowCollider = GetComponent<Collider2D>();
-                ChasedObject.GetComponent<PlayerController>().JumpForce = 2200;
-            }
-            else if (AmountOfSlows > 1)
-            {
-                ChasedObject.GetComponent<PlayerController>().MaxSpeed = 12;
-                MaxSpeed = 4;
-                ChasedObject.GetComponent<PlayerController>().IsSlowed = true;
-                ChasedObject.GetComponent<ItemUse>().slowCollider = GetComponent<Collider2D>();
-                ChasedObject.GetComponent<PlayerController>().JumpForce = 1100;
+                Flip();
             }
         }
+        //Slowing
+        ChasedObject.GetComponent<PlayerController>().CalculateSlow(AmountOfSlows, gameObject);
 
-        Debug.Log("Nachher: " + AmountOfSlows);
-    }  
+        //Reset per TimeIntervall
+        if (AmountOfRunthroughs == AmountOfKids)
+        {
+            AmountOfSlows = 0;
+            AmountOfRunthroughs = 0;
+        }
+    }
+
+    void WalkController()
+    {
+        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) > 2 && !HasChocolate)
+        {
+            myRigidbody2D.velocity = new Vector2(distanceToGranny < 0 ? MaxSpeed * 3 : -MaxSpeed * 3, myRigidbody2D.velocity.y);
+        }
+        else
+        {
+            myRigidbody2D.velocity = new Vector2(0, 0);
+        }
+    }
+
+    void GrabControl()
+    {
+
+        if (Mathf.Abs(distanceToGranny) < 5)
+        {
+            animator.SetBool("Grab", true);
+            AmountOfSlows++;
+            ChasedObject.GetComponent<ItemUse>().slowCollider = GetComponent<Collider2D>();
+        }
+        else
+        {
+            animator.SetBool("Grab", false);
+        }
+    }
 
     void CalculateDistance()
     {
@@ -107,33 +117,6 @@ public class KidController : MonoBehaviour
         }
     }
 
-    void WalkController()
-    {
-        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) > 2 && !HasChocolate)
-        {
-            Chasing();
-        }
-        else
-        {
-            myRigidbody2D.velocity = new Vector2(0, 0);
-        }
-    }
-
-    void Chasing()
-    {
-        myRigidbody2D.velocity = new Vector2(distanceToGranny < 0 ? MaxSpeed * 3 : -MaxSpeed * 3, myRigidbody2D.velocity.y);
-        if (Mathf.Abs(distanceToGranny) < 5)
-        {
-            Debug.Log("Mitte1: " + AmountOfSlows);
-            animator.SetBool("Grab", true);
-        }
-        else
-        {
-            Debug.Log("Mitte2: " + AmountOfSlows);
-            animator.SetBool("Grab", false);
-            AmountOfSlows--;
-        }
-    }
     void Flip()
     {
         IsLookingRight = !IsLookingRight;
