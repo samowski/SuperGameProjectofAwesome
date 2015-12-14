@@ -4,11 +4,14 @@ using System.Collections;
 public class EnemyHealth : MonoBehaviour {
 
     public float health = 3;
-    private Animator animator; 
+
+    Animator animator;
+
     void Start()
     {
         animator = GetComponent<Animator>();
     }
+
     void ApplyDamage(float damage)
     {
         health -= damage;

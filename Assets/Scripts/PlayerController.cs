@@ -71,8 +71,6 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetTrigger("Punch");
             shouldAttack = false;
-            //in order to create bullets etc: GameObject bullet = (GameObject) Instantiate(bulletPrefab, spawnPoint.position, Quaternion,identity);
-            //bullet.GetComponentyRigidbody2D>().AddForce(Vector3.right * bulletSpeed); -- bulletSpeed is a new float-variable
         }
     }
 
@@ -84,16 +82,6 @@ public class PlayerController : MonoBehaviour
         transform.localScale = myScale;
     }
 	
-	void ChangeAttackTrue()
-	{
-		IsAttacking = true;
-	}
-
-	void ChangeAttackFalse()
-	{
-		IsAttacking = false;
-	}
-
     public void CalculateSlow(int amountOfSlows, GameObject kid)
     {
         MaxSpeed = 20;

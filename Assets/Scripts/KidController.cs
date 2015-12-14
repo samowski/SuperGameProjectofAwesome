@@ -27,6 +27,8 @@ public class KidController : MonoBehaviour
     private Rigidbody2D myRigidbody2D;
     private Animator animator;
 
+    PlayerController chasedController;
+
     public Transform ChasedObject;
     public float distanceToGranny;
     #endregion
@@ -40,6 +42,8 @@ public class KidController : MonoBehaviour
         AnglesRFoot = RFoot.GetComponent<SimpleCCD>();
         myRigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        chasedController = ChasedObject.GetComponent<PlayerController>();
     }
 
     void FixedUpdate()
@@ -68,7 +72,7 @@ public class KidController : MonoBehaviour
             }
         }
         //Slowing
-        ChasedObject.GetComponent<PlayerController>().CalculateSlow(AmountOfSlows, gameObject);
+        chasedController.CalculateSlow(AmountOfSlows, gameObject);
 
         //Reset per TimeIntervall
         if (AmountOfRunthroughs == AmountOfKids)

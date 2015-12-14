@@ -3,42 +3,51 @@ using System.Collections;
 
 public class PickupControl : MonoBehaviour
 {
-    public GameObject Granny;
+    GameObject Granny;
+
+    Collider2D pickupCollider;
+    Collider2D grannyCollider;
+
+    ItemUse itemUse;
 
     void Start()
     {
         Granny = GameObject.Find("Granny");
+
+        pickupCollider = GetComponent<Collider2D>();
+        grannyCollider = Granny.GetComponent<Collider2D>();
+
+        itemUse = Granny.GetComponent<ItemUse>();
     }
+
     void FixedUpdate()
     {
-        if (GetComponent<Collider2D>().IsTouching(Granny.GetComponent<Collider2D>()) && Input.GetButton("Fire2") && ItemUse.PickupCooldown == 0)
+        bool gotPill = false;
+
+        if (pickupCollider.IsTouching(grannyCollider) && Input.GetButton("Fire2"))
         {
             if (gameObject.name.Contains("Chocolate"))
             {
-                Granny.SendMessage("HoldChocolate", SendMessageOptions.DontRequireReceiver);
+                itemUse.HoldChocolate();
+                Destroy(gameObject);
             }
-            else
+            else if (gameObject.name.Contains("pillMatrix_0"))
             {
-                if (gameObject.name.Contains("pillMatrix_0"))
-                {
-                    Granny.SendMessage("HoldPill", 0, SendMessageOptions.DontRequireReceiver);
-                }
-                else
-                {
-                    if (gameObject.name.Contains("pillMatrix_1"))
-                    {
-                        Granny.SendMessage("HoldPill", 1, SendMessageOptions.DontRequireReceiver);
-                    }
-                    else
-                    {
-                        if (gameObject.name.Contains("pillMatrix_2"))
-                        {
-                            Granny.SendMessage("HoldPill", 2, SendMessageOptions.DontRequireReceiver);
-                        }
-                    }
-                }
+                gotPill = itemUse.HoldPill(0);
             }
-            Destroy(gameObject);
+            else if (gameObject.name.Contains("pillMatrix_1"))
+            {
+                gotPill = itemUse.HoldPill(1);
+            }
+            else if (gameObject.name.Contains("pillMatrix_2"))
+            {
+                gotPill = itemUse.HoldPill(2);
+            }
+
+            if (gotPill)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
