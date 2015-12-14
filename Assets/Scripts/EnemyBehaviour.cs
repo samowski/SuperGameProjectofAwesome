@@ -76,11 +76,11 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if ((transform.position.x - ChasedObject.position.x) > 0)
         {
-            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((ChasedObject.position.y), 2));
+            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((transform.position.y - ChasedObject.position.y), 2));
         }
         else
         {
-            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((ChasedObject.position.y), 2));
+            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((transform.position.y - ChasedObject.position.y), 2));
         }
     }
 
