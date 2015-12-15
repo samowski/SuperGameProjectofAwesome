@@ -26,12 +26,14 @@ public class EnemyBehaviour : MonoBehaviour
     public bool IsLookingRight = true;
     private Rigidbody2D myRigidbody2D;
     private Animator animator;
+    private EnemyBehaviour myBehaviour;
 
     public Transform ChasedObject;
     public float distanceToGranny;
 
     void Start()
     {
+        myBehaviour = GetComponent<EnemyBehaviour>();
         AnglesLArm = LArm.GetComponent<SimpleCCD>();
         AnglesRArm = RArm.GetComponent<SimpleCCD>();
         AnglesLFoot = LFoot.GetComponent<SimpleCCD>();
@@ -157,6 +159,7 @@ public class EnemyBehaviour : MonoBehaviour
     void SetUnconscious()
     {
         IsUnconscious = true;
+        myBehaviour.enabled = false;
     }
 
     void SetBlocking()
