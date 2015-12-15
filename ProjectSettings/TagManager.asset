@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Caregiver
+  - Police
+  - Kid
+  - Chocolate
+  - Ladder
   layers:
   - Default
   - TransparentFX
@@ -13,11 +18,11 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - PlayerLayer
+  - Background
+  - Floor
+  - Ladder
+  - EnemyLayer
   - 
   - 
   - 
@@ -43,4 +48,16 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Environment
+    uniqueID: 3780521143
+    locked: 0
+  - name: Enemy
+    uniqueID: 244778491
+    locked: 0
+  - name: Player
+    uniqueID: 1524913831
+    locked: 0
+  - name: Kids
+    uniqueID: 3422746877
     locked: 0
