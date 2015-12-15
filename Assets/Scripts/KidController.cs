@@ -115,11 +115,11 @@ public class KidController : MonoBehaviour
     {
         if ((transform.position.x - ChasedObject.position.x) > 0)
         {
-            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((ChasedObject.position.y), 2));
+            distanceToGranny = Vector2.Distance(transform.position, ChasedObject.position);
         }
         else
         {
-            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((ChasedObject.position.y), 2));
+            distanceToGranny = -Vector2.Distance(transform.position, ChasedObject.position);
         }
     }
 
