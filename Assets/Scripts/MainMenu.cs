@@ -194,10 +194,10 @@ public class MainMenu : MonoBehaviour
     void Update()
     {
         #if UNITY_EDITOR
-        if (Input.GetButtonUp("Jump"))
+        /*if (Input.GetButtonUp("Jump"))
         {
             LoadGame();
-        }
+        }*/
         #endif
 
         if (Input.GetButtonUp("Cancel"))

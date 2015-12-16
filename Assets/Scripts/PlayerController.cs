@@ -81,7 +81,17 @@ public class PlayerController : MonoBehaviour
         myScale.x *= -1;
         transform.localScale = myScale;
     }
-	
+
+	void ChangeAttackTrue()
+	{
+		IsAttacking = true;
+	}
+
+	void ChangeAttackFalse()
+	{
+		IsAttacking = false;
+	}
+
     public void CalculateSlow(int amountOfSlows, GameObject kid)
     {
         MaxSpeed = 20;
