@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 419208}
   - 212: {fileID: 21296616}
   - 61: {fileID: 6164056}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: House_Tutoring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,8 +24,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 184768}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.7000008, y: 1.55999994, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
+  m_LocalPosition: {x: 753.411255, y: -7.5, z: .5}
+  m_LocalScale: {x: 6, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0

@@ -5,7 +5,7 @@ public class EnemyBehaviour : MonoBehaviour
 {
     public float MaxSpeed = 9;
     //private float CurrentSpeed;
-    private float ViewRange = 35;
+    private float ViewRange = 50;
 
     public bool ShouldWalkItself = false;
     public bool IsUnconscious = false;
