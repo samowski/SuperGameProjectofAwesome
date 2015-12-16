@@ -13,7 +13,7 @@ GameObject:
   - 61: {fileID: 6168714}
   - 61: {fileID: 6103938}
   - 68: {fileID: 6830232}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Park
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,7 +84,7 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Points:
   - {x: 22.0880966, y: -3.34490466}
-  - {x: 44.0453377, y: 6.06174517}
+  - {x: 36.6003532, y: 4.72105408}
 --- !u!212 &21218938
 SpriteRenderer:
   m_ObjectHideFlags: 1
