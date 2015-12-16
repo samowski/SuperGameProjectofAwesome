@@ -13,6 +13,7 @@ GameObject:
   - 61: {fileID: 6168714}
   - 61: {fileID: 6103938}
   - 68: {fileID: 6830232}
+  - 61: {fileID: 6144502}
   m_Layer: 0
   m_Name: Park
   m_TagString: Untagged
@@ -58,6 +59,19 @@ BoxCollider2D:
   m_Offset: {x: -32.2591515, y: -3.44226384}
   serializedVersion: 2
   m_Size: {x: 25.4374466, y: .344955891}
+--- !u!61 &6144502
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 107364}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 40.3719368, y: 4.33398914}
+  serializedVersion: 2
+  m_Size: {x: 7.65801764, y: .675703406}
 --- !u!61 &6168714
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -68,9 +82,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_Offset: {x: 31.8969078, y: -2.87612414}
+  m_Offset: {x: 24.0069389, y: -2.87612414}
   serializedVersion: 2
-  m_Size: {x: 24.5079823, y: .155816525}
+  m_Size: {x: 8.7279501, y: .155816525}
 --- !u!68 &6830232
 EdgeCollider2D:
   m_ObjectHideFlags: 1
