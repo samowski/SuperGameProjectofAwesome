@@ -5,7 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     //Velocity
     public float CurrentSpeed = 30;
-    public float FixedSpeed = 30;
+    float fixedSpeed = 30;
     public float JumpForce = 3000;
     public bool IsSlowed = false;
 
@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
     public void CalculateSlow(int amountOfSlows, GameObject kid)
     {
-        CurrentSpeed = FixedSpeed;
+        CurrentSpeed = fixedSpeed;
         IsSlowed = false;
         JumpForce = 3000;
 
@@ -116,5 +116,16 @@ public class PlayerController : MonoBehaviour
                 JumpForce = 2200;
             }
         }
+    }
+
+    public void SetPillSpeed()
+    {
+        fixedSpeed = 45;
+        Invoke("SetNormalSpeed", 6);
+    }
+
+    public void SetNormalSpeed()
+    {
+        fixedSpeed = 30;
     }
 }

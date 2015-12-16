@@ -5,12 +5,6 @@ public class PunchDamage : MonoBehaviour
 {
     public float damage = 1;
 
-    float defaultDamage;
-
-    void Start()
-    {
-        defaultDamage = damage;
-    }
 
     void OnTriggerStay2D(Collider2D other)
     {
@@ -20,7 +14,7 @@ public class PunchDamage : MonoBehaviour
 			//DontRequireReceiver catches exceptions, if the function wasn't found.
 			other.SendMessage("ApplyDamage", damage, SendMessageOptions.DontRequireReceiver); 
 
-            damage = defaultDamage;
+            damage = 1;
 
             PlayerController.IsAttacking = false;
         }

@@ -94,8 +94,14 @@ public class ItemUse : MonoBehaviour
         }
         else if (IsHoldingPill)
         {
-            GameObject.Find("Rollator").GetComponent<PunchDamage>().damage += 2;
-            Debug.Log("isholgingpill false");
+            if (HoldingPill0)
+            {
+                GameObject.Find("Rollator").GetComponent<PunchDamage>().damage += 2;
+            }
+            if(HoldingPill1)
+            {
+                gameObject.GetComponent<PlayerController>().SetPillSpeed();
+            }
             IsHoldingPill = false;
             HoldingPill0 = false;
             HoldingPill1 = false;
