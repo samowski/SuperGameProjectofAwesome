@@ -6,7 +6,7 @@ public class CollisionDamage : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("ConstructionSite"))
+        if (other.CompareTag("Player"))
         {
             other.SendMessage("ApplyDamage", SendMessageOptions.DontRequireReceiver);
         }

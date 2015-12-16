@@ -5,7 +5,7 @@ public class KidController : MonoBehaviour
 {
 
     #region Variables
-    public float MaxSpeed = 8;
+    public float MaxSpeed = 11;
     private float ViewRange = 105;
     public bool HasChocolate = false;
 
@@ -107,7 +107,7 @@ public class KidController : MonoBehaviour
         else
         {
             animator.SetBool("Grab", false);
-            MaxSpeed = 8;
+            MaxSpeed = 11;
         }
     }
 

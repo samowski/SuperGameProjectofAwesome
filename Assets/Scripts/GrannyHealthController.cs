@@ -4,7 +4,7 @@ using System.Collections;
 public class GrannyHealthController : MonoBehaviour
 {
 
-    private float health = 1;
+    public float health = 1;
     private Animator animator;
     private PlayerController playerController;
 

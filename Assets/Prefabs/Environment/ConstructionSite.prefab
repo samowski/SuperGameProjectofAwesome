@@ -12,6 +12,7 @@ GameObject:
   - 68: {fileID: 6835010}
   - 61: {fileID: 6141302}
   - 61: {fileID: 6190778}
+  - 114: {fileID: 11418152}
   m_Layer: 0
   m_Name: ConstructionSite
   m_TagString: Untagged
@@ -83,6 +84,17 @@ EdgeCollider2D:
   - {x: 3.66889954, y: -.254552096}
   - {x: 4.03123331, y: -.0932474136}
   - {x: 4.47103453, y: .068153955}
+--- !u!114 &11418152
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42c44102b0fbd494d98fee93f99bcc23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &21231208
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 473968}
   - 212: {fileID: 21260182}
   - 61: {fileID: 6128474}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Street
   m_TagString: Untagged
   m_Icon: {fileID: 0}

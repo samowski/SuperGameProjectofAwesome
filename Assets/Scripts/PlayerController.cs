@@ -4,7 +4,8 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     //Velocity
-    public float MaxSpeed = 4;
+    public float CurrentSpeed = 30;
+    public float FixedSpeed = 30;
     public float JumpForce = 550;
     public bool IsSlowed = false;
 
@@ -47,7 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         float hor = Input.GetAxis("Horizontal");
 
-        myRigidbody2D.velocity = new Vector2(hor * MaxSpeed, myRigidbody2D.velocity.y);
+        myRigidbody2D.velocity = new Vector2(hor * CurrentSpeed, myRigidbody2D.velocity.y);
 
         animator.SetFloat("Speed", Mathf.Abs(hor));
 
@@ -84,13 +85,13 @@ public class PlayerController : MonoBehaviour
 	
     public void CalculateSlow(int amountOfSlows, GameObject kid)
     {
-        MaxSpeed = 20;
+        CurrentSpeed = FixedSpeed;
         IsSlowed = false;
         JumpForce = 2200;
 
         if (amountOfSlows > 1)
         {
-            MaxSpeed = 12;
+            CurrentSpeed = 12;
             IsSlowed = true;
             JumpForce = 1100;
         }
@@ -98,7 +99,7 @@ public class PlayerController : MonoBehaviour
         {
             if (amountOfSlows == 1)
             {
-                MaxSpeed = 12;
+                CurrentSpeed = 12;
                 IsSlowed = true;
                 JumpForce = 2200;
             }
