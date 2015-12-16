@@ -1072,16 +1072,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e71b03d6aded0b439795e7ee0400e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsHoldingPill: 0
-  HoldingPill0: 0
-  HoldingPill1: 0
-  HoldingPill2: 0
+  holdPillIndex: -1
   IsHoldingChocolate: 0
   ChocolatePrefab: {fileID: 181394, guid: e732bb2d866e08848821c8eb1dc7ca8d, type: 2}
-  PillPrefab0: {fileID: 155844, guid: 23a85fc251ba8294fa202047e54fec97, type: 2}
-  PillPrefab1: {fileID: 182714, guid: f8f7a363abf168e4b9f1abcd33f061a0, type: 2}
-  PillPrefab2: {fileID: 120502, guid: 005ac0302fc40da4b987602e4adaf6c2, type: 2}
+  pills:
+  - {fileID: 155844, guid: 23a85fc251ba8294fa202047e54fec97, type: 2}
+  - {fileID: 182714, guid: f8f7a363abf168e4b9f1abcd33f061a0, type: 2}
+  - {fileID: 120502, guid: 005ac0302fc40da4b987602e4adaf6c2, type: 2}
+  PickupCooldown: .5
+  UsageCooldown: .5
   slowCollider: {fileID: 0}
+  currentPickupCooldown: 0
+  currentUsageCooldown: 0
 --- !u!114 &11460732
 MonoBehaviour:
   m_ObjectHideFlags: 1
