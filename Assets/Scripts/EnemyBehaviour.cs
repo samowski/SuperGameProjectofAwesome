@@ -3,7 +3,7 @@ using System.Collections;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    public float MaxSpeed = 9;
+    public float MaxSpeed;
     //private float CurrentSpeed;
     private float ViewRange = 50;
 
@@ -38,7 +38,7 @@ public class EnemyBehaviour : MonoBehaviour
         {
             ViewRange = 38;
         }
-        MaxSpeed = 9;
+        MaxSpeed = 7;
         myBehaviour = GetComponent<EnemyBehaviour>();
         AnglesLArm = LArm.GetComponent<SimpleCCD>();
         AnglesRArm = RArm.GetComponent<SimpleCCD>();
