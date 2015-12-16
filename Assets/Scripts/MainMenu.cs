@@ -23,6 +23,8 @@ public class MainMenu : MonoBehaviour
     Slider musicVolumeSlider;
     Slider sfxVolumeSlider;
 
+    PlayerController granny;
+
     void Start()
     {
         SaveGame.Load(); // only on startup ?
@@ -58,6 +60,8 @@ public class MainMenu : MonoBehaviour
         sfxVolumeSlider = GameObject.Find("Panel/Options/SFXSlider").GetComponent<Slider>();
         sfxVolumeSlider.onValueChanged.AddListener(Utils.ChangeSfxVolume);
 
+        granny = GameObject.Find("Granny").GetComponent<PlayerController>();
+
         if (GameProgress.instance.level == 0)
         {
             continueButton.interactable = false;
@@ -67,9 +71,13 @@ public class MainMenu : MonoBehaviour
         {
             animator.SetBool("LevelSelect", true);
             animator.CrossFade("MainLevelSelect", 0.0f);
+
+            granny.isControllable = true;
         }
         else
         {
+            granny.isControllable = false;
+
             if (GameProgress.instance.level == 0)
             {
                 Utils.Select(newGameButton);
@@ -81,10 +89,9 @@ public class MainMenu : MonoBehaviour
         }
     }
         
-    // obsolete ???
-    public void LoadGame()
+    public void LoadGame(string level)
     {
-        Application.LoadLevel("game"); // based on level selection
+        Application.LoadLevel(level); // based on level selection
     }
         
     public void Exit()
@@ -144,6 +151,8 @@ public class MainMenu : MonoBehaviour
     {
         animator.SetBool("LevelSelect", true);
 
+        granny.isControllable = true;
+
         // TODO set active levels
     }
 
@@ -166,6 +175,8 @@ public class MainMenu : MonoBehaviour
     {
         animator.SetBool("LevelSelect", false);
         animator.SetBool("Override", false);
+
+        granny.isControllable = false;
 
         if (GameProgress.instance.level > 0)
         {

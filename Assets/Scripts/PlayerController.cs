@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
 
     public static bool IsAttacking = false;
 
+    public bool isControllable = true;
+
     void Start()
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
@@ -32,34 +34,41 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Jump") && isGrounded)
+        if (isControllable)
         {
-            shouldJump = true;
-        }
+            if (Input.GetButtonDown("Jump") && isGrounded)
+            {
+                shouldJump = true;
+            }
 
-        if (Input.GetButtonDown("Fire1"))
-        {
-            shouldAttack = true;
+            if (Input.GetButtonDown("Fire1"))
+            {
+                shouldAttack = true;
+            }
         }
     }
 
     void FixedUpdate()
     {
-        float hor = Input.GetAxis("Horizontal");
+        if (isControllable)
+        {
+            float hor = Input.GetAxis("Horizontal");
 
-        myRigidbody2D.velocity = new Vector2(hor * MaxSpeed, myRigidbody2D.velocity.y);
+            myRigidbody2D.velocity = new Vector2(hor * MaxSpeed, myRigidbody2D.velocity.y);
+           
+            animator.SetFloat("Speed", Mathf.Abs(hor));
 
-        animator.SetFloat("Speed", Mathf.Abs(hor));
+            if ((hor > 0 && !IsLookingRight) || (hor < 0 && IsLookingRight))
+            {
+                Flip();
+            }
+        }
 
         //GroundDetection of the Groundlayer(WhatIsGround) at the position of GroundCheck with a radius of 0.15
         isGrounded = Physics2D.OverlapCircle(GroundCheck.position, 0.15f, WhatIsGround);
 
         animator.SetBool("IsGrounded", isGrounded);
 
-        if ((hor > 0 && !IsLookingRight) || (hor < 0 && IsLookingRight))
-        {
-            Flip();
-        }
 
         if (shouldJump)
         {
@@ -82,15 +91,15 @@ public class PlayerController : MonoBehaviour
         transform.localScale = myScale;
     }
 
-	void ChangeAttackTrue()
-	{
-		IsAttacking = true;
-	}
+    void ChangeAttackTrue()
+    {
+        IsAttacking = true;
+    }
 
-	void ChangeAttackFalse()
-	{
-		IsAttacking = false;
-	}
+    void ChangeAttackFalse()
+    {
+        IsAttacking = false;
+    }
 
     public void CalculateSlow(int amountOfSlows, GameObject kid)
     {
