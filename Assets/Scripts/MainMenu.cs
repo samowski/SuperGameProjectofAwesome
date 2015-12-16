@@ -12,11 +12,6 @@ public class MainMenu : MonoBehaviour
 
     EventSystem eventSystem;
 
-    // Test
-    Button level1;
-    Button level2;
-    //
-
     Button continueButton;
     Button newGameButton;
     Button optionsButton;
@@ -35,17 +30,6 @@ public class MainMenu : MonoBehaviour
         animator = GetComponent<Animator>();
 
         eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
-
-        // Test
-        level1 = GameObject.Find("Level/Level1").GetComponent<Button>();
-        level1.onClick.AddListener(delegate {
-            Application.LoadLevel("game");
-        });
-        level2 = GameObject.Find("Level/Level2").GetComponent<Button>();
-        level2.onClick.AddListener(delegate {
-            Application.LoadLevel("game2");
-        });
-        //
 
         continueButton = GameObject.Find("Panel/Main/ContinueButton").GetComponent<Button>();
         continueButton.onClick.AddListener(ContinueGame);
@@ -160,7 +144,7 @@ public class MainMenu : MonoBehaviour
     {
         animator.SetBool("LevelSelect", true);
 
-        level2.interactable = GameProgress.instance.level >= 2;
+        // TODO set active levels
     }
 
     public void ConfirmOverride()
