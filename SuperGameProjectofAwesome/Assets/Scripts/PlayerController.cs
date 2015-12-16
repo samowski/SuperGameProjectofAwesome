@@ -4,7 +4,7 @@ using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     //Velocity
-    public float MaxSpeed = 20;
+    public float MaxSpeed = 4;
     public float JumpForce = 550;
     public bool IsSlowed = false;
 
@@ -71,8 +71,6 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetTrigger("Punch");
             shouldAttack = false;
-            //in order to create bullets etc: GameObject bullet = (GameObject) Instantiate(bulletPrefab, spawnPoint.position, Quaternion,identity);
-            //bullet.GetComponentyRigidbody2D>().AddForce(Vector3.right * bulletSpeed); -- bulletSpeed is a new float-variable
         }
     }
 
@@ -84,19 +82,9 @@ public class PlayerController : MonoBehaviour
         transform.localScale = myScale;
     }
 	
-	void ChangeAttackTrue()
-	{
-		IsAttacking = true;
-	}
-
-	void ChangeAttackFalse()
-	{
-		IsAttacking = false;
-	}
-
     public void CalculateSlow(int amountOfSlows, GameObject kid)
     {
-        MaxSpeed = 19;
+        MaxSpeed = 20;
         IsSlowed = false;
         JumpForce = 2200;
 
