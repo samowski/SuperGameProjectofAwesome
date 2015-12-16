@@ -1091,8 +1091,13 @@ MonoBehaviour:
   - {fileID: 155844, guid: 23a85fc251ba8294fa202047e54fec97, type: 2}
   - {fileID: 182714, guid: f8f7a363abf168e4b9f1abcd33f061a0, type: 2}
   - {fileID: 120502, guid: 005ac0302fc40da4b987602e4adaf6c2, type: 2}
+<<<<<<< HEAD
   PickupCooldown: 5
   UsageCooldown: 5
+=======
+  PickupCooldown: .5
+  UsageCooldown: .5
+>>>>>>> af5b16fc5fe552e828480ccb1d1759c6a6b2594f
   slowCollider: {fileID: 0}
   currentPickupCooldown: 0
   currentUsageCooldown: 0

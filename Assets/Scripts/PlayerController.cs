@@ -83,6 +83,18 @@ public class PlayerController : MonoBehaviour
         transform.localScale = myScale;
     }
 	
+    // called from animation
+    void ChangeAttackTrue()
+    {
+        IsAttacking = true;
+    }
+
+    void ChangeAttackFalse()
+    {
+        IsAttacking = false;
+    }
+    //
+
     public void CalculateSlow(int amountOfSlows, GameObject kid)
     {
         CurrentSpeed = FixedSpeed;

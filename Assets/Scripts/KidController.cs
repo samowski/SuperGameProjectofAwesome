@@ -113,13 +113,17 @@ public class KidController : MonoBehaviour
 
     void CalculateDistance()
     {
+        // problem: der ursprung der granny ist an den füßen, der urprung der kinder ist in der körper mitte => falsche distan
+		// gizmo's anschalten für visualisierung
+		Debug.DrawLine(transform.position, ChasedObject.position);
+
         if ((transform.position.x - ChasedObject.position.x) > 0)
         {
-            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((ChasedObject.position.y), 2));
+            distanceToGranny = Vector2.Distance(transform.position, ChasedObject.position);
         }
         else
         {
-            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((ChasedObject.position.y), 2));
+            distanceToGranny = -Vector2.Distance(transform.position, ChasedObject.position);
         }
     }
 
