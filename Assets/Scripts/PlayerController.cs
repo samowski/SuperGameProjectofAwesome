@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
     //Velocity
     public float CurrentSpeed = 30;
     public float FixedSpeed = 30;
-    public float JumpForce = 550;
+    public float JumpForce = 3000;
     public bool IsSlowed = false;
 
     //GoundDetection
@@ -99,13 +99,13 @@ public class PlayerController : MonoBehaviour
     {
         CurrentSpeed = FixedSpeed;
         IsSlowed = false;
-        JumpForce = 2200;
+        JumpForce = 3000;
 
         if (amountOfSlows > 1)
         {
             CurrentSpeed = 12;
             IsSlowed = true;
-            JumpForce = 1100;
+            JumpForce = 1500;
         }
         else
         {

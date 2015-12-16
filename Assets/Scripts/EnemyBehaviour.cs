@@ -29,10 +29,16 @@ public class EnemyBehaviour : MonoBehaviour
     private EnemyBehaviour myBehaviour;
 
     public Transform ChasedObject;
+    public Vector2 GrannyPos;
     public float distanceToGranny;
 
     void Start()
     {
+        if(gameObject.tag=="Police")
+        {
+            ViewRange = 38;
+        }
+        MaxSpeed = 9;
         myBehaviour = GetComponent<EnemyBehaviour>();
         AnglesLArm = LArm.GetComponent<SimpleCCD>();
         AnglesRArm = RArm.GetComponent<SimpleCCD>();
@@ -45,6 +51,8 @@ public class EnemyBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
+        GrannyPos = ChasedObject.position;
+        GrannyPos.y += 11;
 
         if (!IsUnconscious)
         {
@@ -76,13 +84,13 @@ public class EnemyBehaviour : MonoBehaviour
 
     void CalculateDistance()
     {
-        if ((transform.position.x - ChasedObject.position.x) > 0)
+        if ((transform.position.x - GrannyPos.x) > 0)
         {
-            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((transform.position.y - ChasedObject.position.y), 2));
+            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
         }
         else
         {
-            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((transform.position.y - ChasedObject.position.y), 2));
+            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
         }
     }
 

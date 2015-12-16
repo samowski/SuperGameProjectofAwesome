@@ -30,6 +30,7 @@ public class KidController : MonoBehaviour
     PlayerController chasedController;
 
     public Transform ChasedObject;
+    Vector2 GrannyPos;
     public float distanceToGranny;
     #endregion
 
@@ -44,10 +45,14 @@ public class KidController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         chasedController = ChasedObject.GetComponent<PlayerController>();
+
     }
 
     void FixedUpdate()
     {
+        GrannyPos = ChasedObject.position;
+        GrannyPos.y += 11; 
+
         AmountOfRunthroughs++;
 
         //HoldsChocolate -> Stop
@@ -97,7 +102,7 @@ public class KidController : MonoBehaviour
     void GrabControl()
     {
 
-        if (Mathf.Abs(distanceToGranny) < 5)
+        if (Mathf.Abs(distanceToGranny) < 5 && Mathf.Abs(distanceToGranny) > 1)
         {
             animator.SetBool("Grab", true);
             MaxSpeed = 4;
@@ -115,15 +120,15 @@ public class KidController : MonoBehaviour
     {
         // problem: der ursprung der granny ist an den füßen, der urprung der kinder ist in der körper mitte => falsche distan
 		// gizmo's anschalten für visualisierung
-		Debug.DrawLine(transform.position, ChasedObject.position);
+		Debug.DrawLine(transform.position, GrannyPos);
 
-        if ((transform.position.x - ChasedObject.position.x) > 0)
+        if ((transform.position.x - GrannyPos.x) > 0)
         {
-            distanceToGranny = Vector2.Distance(transform.position, ChasedObject.position);
+            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
         }
         else
         {
-            distanceToGranny = -Vector2.Distance(transform.position, ChasedObject.position);
+            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
         }
     }
 
