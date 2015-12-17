@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Audio;
 using System.Collections;
 
 public class Options : MonoBehaviour
@@ -7,6 +8,7 @@ public class Options : MonoBehaviour
 
     public float musicVolume;
     public float sfxVolume;
+    public AudioMixer audioMixer;
 
     public float MusicVolume
     {
@@ -17,7 +19,7 @@ public class Options : MonoBehaviour
         set
         {
             musicVolume = value;
-            // TODO set volume
+            audioMixer.SetFloat("musicVolume", toDb(value));
         }
     }
 
@@ -30,7 +32,21 @@ public class Options : MonoBehaviour
         set
         {
             sfxVolume = value;
-            // TODO set volume
+            audioMixer.SetFloat("sfxVolume", toDb(value));
+        }
+    }
+
+
+
+    static float toDb(float value)
+    {
+        if (value <= 0.0f)
+        {
+            return -80.0f;
+        }
+        else
+        {
+            return  20f * Mathf.Log10(value * value);
         }
     }
 
