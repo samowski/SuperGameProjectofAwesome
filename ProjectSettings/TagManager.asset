@@ -9,6 +9,7 @@ TagManager:
   - Kid
   - Chocolate
   - Ladder
+  - ConstructionSite
   layers:
   - Default
   - TransparentFX

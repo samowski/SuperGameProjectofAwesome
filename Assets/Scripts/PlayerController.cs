@@ -3,9 +3,13 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject BustedPrefab;
+    private Vector3 BustedPrefabPosition;
+
     //Velocity
-    public float MaxSpeed = 4;
-    public float JumpForce = 550;
+    public float CurrentSpeed = 30;
+    float fixedSpeed = 30;
+    public float JumpForce = 3000;
     public bool IsSlowed = false;
 
     //GoundDetection
@@ -25,11 +29,14 @@ public class PlayerController : MonoBehaviour
     public static bool IsAttacking = false;
 
     public bool isControllable = true;
+    static uint helper= 1;
 
     void Start()
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        helper = 1;
+        animator.SetBool("Dying", false);
     }
 
     void Update()
@@ -54,7 +61,7 @@ public class PlayerController : MonoBehaviour
         {
             float hor = Input.GetAxis("Horizontal");
 
-            myRigidbody2D.velocity = new Vector2(hor * MaxSpeed, myRigidbody2D.velocity.y);
+			myRigidbody2D.velocity = new Vector2(hor * CurrentSpeed, myRigidbody2D.velocity.y);
            
             animator.SetFloat("Speed", Mathf.Abs(hor));
 
@@ -91,6 +98,7 @@ public class PlayerController : MonoBehaviour
         transform.localScale = myScale;
     }
 
+    // called from animation
     void ChangeAttackTrue()
     {
         IsAttacking = true;
@@ -100,27 +108,72 @@ public class PlayerController : MonoBehaviour
     {
         IsAttacking = false;
     }
+    //
 
     public void CalculateSlow(int amountOfSlows, GameObject kid)
     {
-        MaxSpeed = 20;
+        CurrentSpeed = fixedSpeed;
         IsSlowed = false;
-        JumpForce = 2200;
+        JumpForce = 3000;
 
         if (amountOfSlows > 1)
         {
-            MaxSpeed = 12;
+            CurrentSpeed = 12;
             IsSlowed = true;
-            JumpForce = 1100;
+            JumpForce = 1500;
         }
         else
         {
             if (amountOfSlows == 1)
             {
-                MaxSpeed = 12;
+                CurrentSpeed = 12;
                 IsSlowed = true;
-                JumpForce = 2200;
+                JumpForce = 3000;
             }
+        }
+    }
+
+    public void SetPillSpeed(int speed)
+    {
+        if (speed <= fixedSpeed)
+        {
+            GameObject.Find("Sound").GetComponent<AudioSource>().pitch = 0.7f;
+        }
+        else
+        {
+            GameObject.Find("Sound").GetComponent<AudioSource>().pitch = 1.2f;
+        }
+        fixedSpeed = speed;
+        Invoke("SetNormalSpeed", 6);
+    }
+
+    public void SetNormalSpeed()
+    {
+        GameObject.Find("Sound").GetComponent<AudioSource>().pitch = 1;
+        fixedSpeed = 30;
+    }
+
+    public void ApplyGrannyDamage()
+    {
+        BustedPrefabPosition = gameObject.transform.position;
+        BustedPrefabPosition.y += 60;
+        myRigidbody2D.velocity = new Vector2(0, 0);
+
+        animator.SetBool("Dying", true);
+        animator.SetFloat("Speed", 0);
+
+        Invoke("Busted", 1);
+
+        GetComponent<LadderScript>().enabled = false;       //Kann immer noch Leitern hochlaufen nach dem fangen!!! Trotz dieser Zeile!
+        GetComponent<PlayerController>().enabled = false;
+    }
+
+    public void Busted()
+    {
+        if (helper > 0)
+        {
+            helper--;
+            GameObject Busted = (GameObject)Instantiate(BustedPrefab, BustedPrefabPosition, Quaternion.identity);
         }
     }
 }

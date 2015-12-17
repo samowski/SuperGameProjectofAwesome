@@ -3,54 +3,38 @@ using System.Collections;
 
 public class ItemUse : MonoBehaviour
 {
-    public int holdPillIndex = -1;
+    public bool IsHoldingPill = false;
+    public bool HoldingPill0 = false;
+    public bool HoldingPill1 = false;
+    public bool HoldingPill2 = false;
     public bool IsHoldingChocolate = false;
     public GameObject ChocolatePrefab;
-    public GameObject[] pills;
-    public float PickupCooldown = 0;
-    public float UsageCooldown = 0;
+    public GameObject PillPrefab0;
+    public GameObject PillPrefab1;
+    public GameObject PillPrefab2;
+    public static uint PickupCooldown = 0;
+    public static uint UsageCooldown = 0;
 
     public Collider2D slowCollider;
 
-    PlayerController playerController;
-    KidController kidController;
-
-    PunchDamage rollatorDamage;
-
-    [SerializeField]
-    float currentPickupCooldown = 0.0f;
-    [SerializeField]
-    float currentUsageCooldown = 0.0f;
-
-    void Start()
-    {
-        playerController = GetComponent<PlayerController>();
-        kidController = slowCollider.GetComponent<KidController>();
-
-        rollatorDamage = GameObject.Find("Rollator").GetComponent<PunchDamage>();
-    }
-
     void FixedUpdate()
     {
-        float delta = Time.fixedDeltaTime;
-
-        if (Input.GetButton("Fire3") && (IsHoldingChocolate||isHoldingPill()) && currentUsageCooldown <= 0.0)
+        if (Input.GetButton("Fire3") && IsHoldingChocolate && UsageCooldown == 0)
         {
-            UseItem();
+            UseChocolate();
         }
-        if (currentPickupCooldown > 0)
+        if (Input.GetButton("Fire4") && IsHoldingPill && UsageCooldown == 0)
         {
-            currentPickupCooldown -= delta;
+            UsePill();
         }
-        if(currentUsageCooldown>0)
+        if (PickupCooldown > 0)
         {
-            currentUsageCooldown -= delta;
+            PickupCooldown--;
         }
-    }
-
-    bool isHoldingPill()
-    {
-        return holdPillIndex > -1;
+        if (UsageCooldown > 0)
+        {
+            UsageCooldown--;
+        }
     }
 
     public void HoldChocolate()
@@ -58,36 +42,50 @@ public class ItemUse : MonoBehaviour
         IsHoldingChocolate = true;
     }
 
-    public bool HoldPill(int pillNumber)
+    public void HoldPill(int pillNumber)
     {
-        if (currentPickupCooldown <= 0.0f && currentPickupCooldown <= 0.0f)
+        if (PickupCooldown == 0)
         {
-            currentPickupCooldown = PickupCooldown;
-
-            if (isHoldingPill())
+            PickupCooldown = 20;
+            if (IsHoldingPill)
             {
                 Vector3 temppos = gameObject.transform.position;
                 temppos.y += 2;
-                Instantiate(pills[holdPillIndex], temppos, Quaternion.identity);
+                GameObject oldPill = (GameObject)Instantiate(HoldingPill0 ? PillPrefab0 : HoldingPill1 ? PillPrefab1 : HoldingPill2 ? PillPrefab2 : null, temppos, Quaternion.identity);
             }
 
-            holdPillIndex = pillNumber;
-
-            return true;
+            IsHoldingPill = true;
+            switch (pillNumber)
+            {
+                case 0:
+                    HoldingPill0 = true;
+                    HoldingPill1 = false;
+                    HoldingPill2 = false;
+                    break;
+                case 1:
+                    HoldingPill0 = false;
+                    HoldingPill1 = true;
+                    HoldingPill2 = false;
+                    break;
+                case 2:
+                    HoldingPill0 = false;
+                    HoldingPill1 = false;
+                    HoldingPill2 = true;
+                    break;
+            }
         }
-        return false;
     }
 
-    public void UseItem()
+    public void UseChocolate()
     {
-        currentUsageCooldown = UsageCooldown;
+        UsageCooldown = 20;
 
-        if (playerController.IsSlowed)
+        if (GetComponent<PlayerController>().IsSlowed && IsHoldingChocolate)
         {
             IsHoldingChocolate = false;
 
             Vector3 temppos = slowCollider.transform.position;
-            if (kidController.IsLookingRight)
+            if (slowCollider.GetComponent<KidController>().IsLookingRight)
             {
                 temppos.x += 4;
             }
@@ -95,14 +93,33 @@ public class ItemUse : MonoBehaviour
             {
                 temppos.x -= 4;
             }
-            Instantiate(ChocolatePrefab, temppos, Quaternion.identity);
-            kidController.HasChocolate = true;
+            GameObject chocolate1 = (GameObject)Instantiate(ChocolatePrefab, temppos, Quaternion.identity);
+            slowCollider.GetComponent<KidController>().HasChocolate = true;
         }
-        else if (isHoldingPill())
+    }
+
+    public void UsePill()
+    {
+        UsageCooldown = 20;
+
+        if (IsHoldingPill)
         {
-            rollatorDamage.damage += 2;
-            Debug.Log("isholgingpill false");
-            holdPillIndex = -1;
+            if (HoldingPill0)
+            {
+                GameObject.Find("Rollator").GetComponent<PunchDamage>().damage += 2;
+            }
+            if (HoldingPill1)
+            {
+                gameObject.GetComponent<PlayerController>().SetPillSpeed(45);
+            }
+            if (HoldingPill2)
+            {
+                gameObject.GetComponent<PlayerController>().SetPillSpeed(15);
+            }
+            IsHoldingPill = false;
+            HoldingPill0 = false;
+            HoldingPill1 = false;
+            HoldingPill2 = false;
         }
     }
 }

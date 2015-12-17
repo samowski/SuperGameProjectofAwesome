@@ -21,6 +21,7 @@ public class EnemyHealth : MonoBehaviour {
             //Destroy(gameObject);
             gameObject.SendMessage("SetUnconscious", SendMessageOptions.DontRequireReceiver);
             animator.SetTrigger("Unconscious");
+            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         }
         else
         {

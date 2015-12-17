@@ -5,7 +5,7 @@ public class KidController : MonoBehaviour
 {
 
     #region Variables
-    public float MaxSpeed = 8;
+    public float MaxSpeed = 11;
     private float ViewRange = 105;
     public bool HasChocolate = false;
 
@@ -30,6 +30,7 @@ public class KidController : MonoBehaviour
     PlayerController chasedController;
 
     public Transform ChasedObject;
+    public Vector2 GrannyPos;
     public float distanceToGranny;
     #endregion
 
@@ -44,10 +45,14 @@ public class KidController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         chasedController = ChasedObject.GetComponent<PlayerController>();
+
     }
 
     void FixedUpdate()
     {
+        GrannyPos = ChasedObject.position;
+        GrannyPos.y += 8.2f; 
+
         AmountOfRunthroughs++;
 
         //HoldsChocolate -> Stop
@@ -107,19 +112,19 @@ public class KidController : MonoBehaviour
         else
         {
             animator.SetBool("Grab", false);
-            MaxSpeed = 8;
+            MaxSpeed = 11;
         }
     }
 
     void CalculateDistance()
     {
-        if ((transform.position.x - ChasedObject.position.x) > 0)
+        if ((transform.position.x - GrannyPos.x) > 0)
         {
-            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((ChasedObject.position.y), 2));
+            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
         }
         else
         {
-            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((ChasedObject.position.y), 2));
+            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
         }
     }
 

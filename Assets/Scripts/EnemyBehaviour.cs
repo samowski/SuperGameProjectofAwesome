@@ -3,9 +3,9 @@ using System.Collections;
 
 public class EnemyBehaviour : MonoBehaviour
 {
-    public float MaxSpeed = 9;
+    public float MaxSpeed;
     //private float CurrentSpeed;
-    private float ViewRange = 35;
+    private float ViewRange = 50;
 
     public bool ShouldWalkItself = false;
     public bool IsUnconscious = false;
@@ -26,12 +26,20 @@ public class EnemyBehaviour : MonoBehaviour
     public bool IsLookingRight = true;
     private Rigidbody2D myRigidbody2D;
     private Animator animator;
+    private EnemyBehaviour myBehaviour;
 
     public Transform ChasedObject;
+    public Vector2 GrannyPos;
     public float distanceToGranny;
 
     void Start()
     {
+        if(gameObject.tag=="Police")
+        {
+            ViewRange = 38;
+        }
+        MaxSpeed = 7;
+        myBehaviour = GetComponent<EnemyBehaviour>();
         AnglesLArm = LArm.GetComponent<SimpleCCD>();
         AnglesRArm = RArm.GetComponent<SimpleCCD>();
         AnglesLFoot = LFoot.GetComponent<SimpleCCD>();
@@ -43,6 +51,8 @@ public class EnemyBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
+        GrannyPos = ChasedObject.position;
+        GrannyPos.y += 15;
 
         if (!IsUnconscious)
         {
@@ -74,19 +84,19 @@ public class EnemyBehaviour : MonoBehaviour
 
     void CalculateDistance()
     {
-        if ((transform.position.x - ChasedObject.position.x) > 0)
+        if ((transform.position.x - GrannyPos.x) > 0)
         {
-            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((transform.position.y - ChasedObject.position.y), 2));
+            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
         }
         else
         {
-            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - ChasedObject.position.x), 2) + Mathf.Pow((transform.position.y - ChasedObject.position.y), 2));
+            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
         }
     }
 
     void WalkController()
     {
-        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) > 2)
+        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) >3)
         {
             Chasing();
         }
@@ -110,7 +120,15 @@ public class EnemyBehaviour : MonoBehaviour
         ShouldWalkItself = false;
         if (Mathf.Abs(distanceToGranny) < 5)
         {
-                animator.SetTrigger("Catch");
+            animator.SetTrigger("Catch");
+            myRigidbody2D.velocity = new Vector2(0, 0);
+            ChasedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+
+            Vector2 spawnpoint = ChasedObject.position;
+            spawnpoint.y += 60;
+            GameObject Busted = (GameObject)Instantiate(ChasedObject.GetComponent<PlayerController>().BustedPrefab, spawnpoint, Quaternion.identity);
+            GetComponent<EnemyBehaviour>().enabled = false;
+            ChasedObject.GetComponent<PlayerController>().enabled = false;
         }
     }
 
@@ -157,6 +175,7 @@ public class EnemyBehaviour : MonoBehaviour
     void SetUnconscious()
     {
         IsUnconscious = true;
+        myBehaviour.enabled = false;
     }
 
     void SetBlocking()
