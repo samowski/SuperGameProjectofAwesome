@@ -7,7 +7,6 @@ public class LevelEntry : MonoBehaviour
     public string Level;
 	public uint neededLevel = 0;
 
-	Collider2D rollatorCollider;
     MainMenu menu;
 
     SpriteRenderer spriteRenderer;
@@ -16,7 +15,6 @@ public class LevelEntry : MonoBehaviour
 
     void Start()
     {
-        rollatorCollider = GameObject.Find("Granny/Textures/Rollator").GetComponent<Collider2D>();
         menu = GameObject.Find("Menu").GetComponent<MainMenu>();
        
         transform.parent.FindChild("Canvas/Text").GetComponent<Text>().text = neededLevel.ToString();
@@ -26,29 +24,23 @@ public class LevelEntry : MonoBehaviour
 
         UpdateEnabled();
     }
-	
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other == rollatorCollider && GameProgress.instance.level >= neededLevel)
-        {
-            //Debug.Log("enter");
-        }
-    }
 
     void ApplyDamage(float damage)
     {
         if (GameProgress.instance.level >= neededLevel)
         {
-            menu.LoadGame(Level);
+			StartCoroutine(waitAndLoad());
         }
     }
+
+	IEnumerator waitAndLoad()
+	{
+		yield return new WaitForSeconds(0.5f);
+		menu.LoadGame(Level);
+	}
 
     public void UpdateEnabled()
     {
         spriteRenderer.material = GameProgress.instance.level >= neededLevel ? enabledMaterial : disabledMaterial;
-    }
-
-    void Update()
-    {
     }
 }

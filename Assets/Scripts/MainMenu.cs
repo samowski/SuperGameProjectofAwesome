@@ -29,8 +29,6 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        SaveGame.Load(); // only on startup ?
-
         animator = GetComponent<Animator>();
 
         eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
