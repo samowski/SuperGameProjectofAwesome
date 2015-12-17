@@ -3,6 +3,9 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameObject BustedPrefab;
+    private Vector3 BustedPrefabPosition;
+
     //Velocity
     public float CurrentSpeed = 30;
     float fixedSpeed = 30;
@@ -25,10 +28,14 @@ public class PlayerController : MonoBehaviour
 
     public static bool IsAttacking = false;
 
+    static uint helper= 1;
+
     void Start()
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        helper = 1;
+        animator.SetBool("Dying", false);
     }
 
     void Update()
@@ -118,14 +125,42 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void SetPillSpeed()
+    public void SetPillSpeed(int speed)
     {
-        fixedSpeed = 45;
+        if (speed <= fixedSpeed)
+        {
+            GameObject.Find("Sound").GetComponent<AudioSource>().pitch = 0.7f;
+        }
+        else
+        {
+            GameObject.Find("Sound").GetComponent<AudioSource>().pitch = 1.2f;
+        }
+        fixedSpeed = speed;
         Invoke("SetNormalSpeed", 6);
     }
 
     public void SetNormalSpeed()
     {
+        GameObject.Find("Sound").GetComponent<AudioSource>().pitch = 1;
         fixedSpeed = 30;
+    }
+
+    public void ApplyGrannyDamage()
+    {
+        BustedPrefabPosition = gameObject.transform.position;
+        BustedPrefabPosition.y += 150;
+        myRigidbody2D.velocity = new Vector2(0, 0);
+        animator.SetBool("Dying", true);
+        Invoke("Busted", 1);
+        GetComponent<PlayerController>().enabled = false;
+    }
+
+    public void Busted()
+    {
+        if (helper > 0)
+        {
+            helper--;
+            GameObject Busted = (GameObject)Instantiate(BustedPrefab, BustedPrefabPosition, Quaternion.identity);
+        }
     }
 }

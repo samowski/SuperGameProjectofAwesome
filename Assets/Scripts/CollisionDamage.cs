@@ -8,7 +8,7 @@ public class CollisionDamage : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.SendMessage("ApplyDamage", SendMessageOptions.DontRequireReceiver);
+            other.SendMessage("ApplyGrannyDamage", SendMessageOptions.DontRequireReceiver);
         }
     }
 }

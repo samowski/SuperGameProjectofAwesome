@@ -738,6 +738,7 @@ MonoBehaviour:
   RFoot: {fileID: 125474}
   IsLookingRight: 1
   ChasedObject: {fileID: 0}
+  GrannyPos: {x: 0, y: 0}
   distanceToGranny: 0
 --- !u!114 &11491524
 MonoBehaviour:
@@ -1250,7 +1251,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 102608}

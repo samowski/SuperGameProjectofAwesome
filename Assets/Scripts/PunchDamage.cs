@@ -8,7 +8,7 @@ public class PunchDamage : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (!other.CompareTag("Player") && PlayerController.IsAttacking)
+        if (other.CompareTag("Caregiver") && PlayerController.IsAttacking)
         {
 			//If a collider is hit, search in the hit object for a script with a function "ApplyDamage" and execute this function.
 			//DontRequireReceiver catches exceptions, if the function wasn't found.

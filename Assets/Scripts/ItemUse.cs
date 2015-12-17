@@ -19,9 +19,13 @@ public class ItemUse : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Input.GetButton("Fire3") && (IsHoldingChocolate || IsHoldingPill) && UsageCooldown == 0)
+        if (Input.GetButton("Fire3") && IsHoldingChocolate && UsageCooldown == 0)
         {
-            UseItem();
+            UseChocolate();
+        }
+        if (Input.GetButton("Fire4") && IsHoldingPill && UsageCooldown == 0)
+        {
+            UsePill();
         }
         if (PickupCooldown > 0)
         {
@@ -72,11 +76,11 @@ public class ItemUse : MonoBehaviour
         }
     }
 
-    public void UseItem()
+    public void UseChocolate()
     {
         UsageCooldown = 20;
 
-        if (GetComponent<PlayerController>().IsSlowed)
+        if (GetComponent<PlayerController>().IsSlowed && IsHoldingChocolate)
         {
             IsHoldingChocolate = false;
 
@@ -92,15 +96,26 @@ public class ItemUse : MonoBehaviour
             GameObject chocolate1 = (GameObject)Instantiate(ChocolatePrefab, temppos, Quaternion.identity);
             slowCollider.GetComponent<KidController>().HasChocolate = true;
         }
-        else if (IsHoldingPill)
+    }
+
+    public void UsePill()
+    {
+        UsageCooldown = 20;
+
+        if (IsHoldingPill)
         {
             if (HoldingPill0)
             {
+                Debug.Log("hi");
                 GameObject.Find("Rollator").GetComponent<PunchDamage>().damage += 2;
             }
-            if(HoldingPill1)
+            if (HoldingPill1)
             {
-                gameObject.GetComponent<PlayerController>().SetPillSpeed();
+                gameObject.GetComponent<PlayerController>().SetPillSpeed(45);
+            }
+            if (HoldingPill2)
+            {
+                gameObject.GetComponent<PlayerController>().SetPillSpeed(15);
             }
             IsHoldingPill = false;
             HoldingPill0 = false;

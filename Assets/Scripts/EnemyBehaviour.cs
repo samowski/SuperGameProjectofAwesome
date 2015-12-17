@@ -96,7 +96,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     void WalkController()
     {
-        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) > 2)
+        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) >3)
         {
             Chasing();
         }
@@ -120,7 +120,11 @@ public class EnemyBehaviour : MonoBehaviour
         ShouldWalkItself = false;
         if (Mathf.Abs(distanceToGranny) < 5)
         {
-                animator.SetTrigger("Catch");
+            animator.SetTrigger("Catch");
+            ChasedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
+            ChasedObject.GetComponent<PlayerController>().Busted();
+            ChasedObject.GetComponent<PlayerController>().enabled = false;
+            
         }
     }
 
