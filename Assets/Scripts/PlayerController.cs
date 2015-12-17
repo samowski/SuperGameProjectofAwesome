@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
             {
                 CurrentSpeed = 12;
                 IsSlowed = true;
-                JumpForce = 2200;
+                JumpForce = 3000;
             }
         }
     }
