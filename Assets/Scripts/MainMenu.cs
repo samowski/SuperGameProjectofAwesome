@@ -62,6 +62,8 @@ public class MainMenu : MonoBehaviour
 
         granny = GameObject.Find("Granny").GetComponent<PlayerController>();
 
+		PlayerController.IsAttacking = false; //quick fix
+
 		levelEntries = GameObject.FindObjectsOfType<LevelEntry>();
 
         if (GameProgress.instance.level == 0)
@@ -198,13 +200,6 @@ public class MainMenu : MonoBehaviour
 
     void Update()
     {
-        #if UNITY_EDITOR
-        /*if (Input.GetButtonUp("Jump"))
-        {
-            LoadGame();
-        }*/
-        #endif
-
         if (Input.GetButtonUp("Cancel"))
         {
             var currentState = animator.GetCurrentAnimatorStateInfo(0);

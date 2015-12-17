@@ -17,6 +17,8 @@ public class LevelMenu : MonoBehaviour
 
     UnlockLevel unlockLevel;
 
+    PlayerController granny;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -43,11 +45,15 @@ public class LevelMenu : MonoBehaviour
         sfxVolumeSlider.onValueChanged.AddListener(Utils.ChangeSfxVolume);
 
         unlockLevel = GameObject.Find("LevelReward").GetComponent<UnlockLevel>();
+
+        granny = GameObject.Find("Granny").GetComponent<PlayerController>();
     }
 
     public void PauseGame()
     {
 		animator.SetBool("Pause", true);
+
+        granny.isControllable = false;
 
         Utils.Select(continueButton);
     }
@@ -55,6 +61,8 @@ public class LevelMenu : MonoBehaviour
     public void ContinueGame()
     {
 		animator.SetBool("Pause", false);
+
+        granny.isControllable = true;
     }
 
     public void EnterOptions()
@@ -108,11 +116,10 @@ public class LevelMenu : MonoBehaviour
             }
         }
 
-        #if UNITY_EDITOR
-        if (Input.GetButtonUp("Jump"))
+        
+		if (Input.GetKeyUp(KeyCode.Z))
         {
             Exit(true);
         }
-        #endif
     }
 }

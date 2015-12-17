@@ -8,10 +8,13 @@ public class GrannyHealthController : MonoBehaviour
     private Animator animator;
     private PlayerController playerController;
 
+	LevelMenu levelMenu;
+
     void Start()
     {
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
+		levelMenu = GameObject.Find("LevelMenu").GetComponent<LevelMenu>();
     }
 
     void ApplyDamage()
@@ -36,10 +39,10 @@ public class GrannyHealthController : MonoBehaviour
 
     void RestartGame()
     {
-        Application.LoadLevel(1);
-        health = 1;
-        animator.SetBool("Dying", false);
-
+        levelMenu.Exit(false);
+        //Application.LoadLevel(1);
+        //health = 1;
+        //animator.SetBool("Dying", false);
     }
 }
 

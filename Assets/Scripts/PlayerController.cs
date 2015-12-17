@@ -174,6 +174,7 @@ public class PlayerController : MonoBehaviour
         {
             helper--;
             GameObject Busted = (GameObject)Instantiate(BustedPrefab, BustedPrefabPosition, Quaternion.identity);
+
         }
     }
 }

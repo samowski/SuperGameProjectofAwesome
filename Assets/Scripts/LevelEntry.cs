@@ -4,7 +4,9 @@ using System.Collections;
 
 public class LevelEntry : MonoBehaviour
 {
-    public string Level;
+    bool isLoading = false;
+
+	public string Level;
 	public uint neededLevel = 0;
 
     MainMenu menu;
@@ -13,9 +15,13 @@ public class LevelEntry : MonoBehaviour
     Material enabledMaterial;
     public Material disabledMaterial;
 
+    Collider2D rollatorCollider;
+
     void Start()
     {
-        menu = GameObject.Find("Menu").GetComponent<MainMenu>();
+        rollatorCollider = GameObject.Find("Rollator").GetComponent<Collider2D>();
+
+		menu = GameObject.Find("Menu").GetComponent<MainMenu>();
        
         transform.parent.FindChild("Canvas/Text").GetComponent<Text>().text = neededLevel.ToString();
 
@@ -25,14 +31,15 @@ public class LevelEntry : MonoBehaviour
         UpdateEnabled();
     }
 
-    void ApplyDamage(float damage)
+    void OnTriggerStay2D(Collider2D other)
     {
-        if (GameProgress.instance.level >= neededLevel)
+		if (other == rollatorCollider && GameProgress.instance.level >= neededLevel && PlayerController.IsAttacking && !isLoading)
         {
+			isLoading = true;
 			StartCoroutine(waitAndLoad());
         }
     }
-
+        
 	IEnumerator waitAndLoad()
 	{
 		yield return new WaitForSeconds(0.5f);

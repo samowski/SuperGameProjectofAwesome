@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Loader : MonoBehaviour
 {
-	void Start ()
+	void Start()
 	{
 		SaveGame.Load();
 	}

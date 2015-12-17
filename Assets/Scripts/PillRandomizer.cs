@@ -5,9 +5,15 @@ public class PillRandomizer : MonoBehaviour
 {
     public int EffectNumber = 0;
 
-    public static int[] PillNumbers = new int[3] { (int)(UnityEngine.Random.value * 39), (int)(UnityEngine.Random.value * 39), (int)(UnityEngine.Random.value * 39) };
+    // problem on second load
+    public static int[] PillNumbers;
 
 	SpriteRenderer spriteRenderer;
+
+    void Awake()
+    {
+        PillNumbers = new int[3] { (int)(UnityEngine.Random.value * 39), (int)(UnityEngine.Random.value * 39), (int)(UnityEngine.Random.value * 39) };
+    }
 
 	void Start()
 	{
