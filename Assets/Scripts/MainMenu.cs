@@ -93,7 +93,7 @@ public class MainMenu : MonoBehaviour
         
     public void LoadGame(string level)
     {
-        Application.LoadLevel(level); // based on level selection
+        Application.LoadLevel(level);
     }
         
     public void Exit()
