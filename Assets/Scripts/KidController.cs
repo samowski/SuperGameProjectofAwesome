@@ -102,7 +102,7 @@ public class KidController : MonoBehaviour
     void GrabControl()
     {
 
-        if (Mathf.Abs(distanceToGranny) < 5 && Mathf.Abs(distanceToGranny) > 1)
+        if (Mathf.Abs(distanceToGranny) < 5)
         {
             animator.SetBool("Grab", true);
             MaxSpeed = 4;
