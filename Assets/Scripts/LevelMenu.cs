@@ -46,14 +46,17 @@ public class LevelMenu : MonoBehaviour
 
         unlockLevel = GameObject.Find("LevelReward").GetComponent<UnlockLevel>();
 
-        granny = GameObject.Find("Granny").GetComponent<PlayerController>();
+        var go = GameObject.Find("Granny");
+        if (go != null)
+            granny = go.GetComponent<PlayerController>();
     }
 
     public void PauseGame()
     {
 		animator.SetBool("Pause", true);
 
-        granny.isControllable = false;
+        if (granny != null)
+            granny.isControllable = false;
 
         Utils.Select(continueButton);
     }
@@ -62,7 +65,8 @@ public class LevelMenu : MonoBehaviour
     {
 		animator.SetBool("Pause", false);
 
-        granny.isControllable = true;
+        if (granny != null)
+            granny.isControllable = true;
     }
 
     public void EnterOptions()
