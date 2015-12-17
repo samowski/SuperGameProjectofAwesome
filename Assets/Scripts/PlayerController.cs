@@ -148,10 +148,15 @@ public class PlayerController : MonoBehaviour
     public void ApplyGrannyDamage()
     {
         BustedPrefabPosition = gameObject.transform.position;
-        BustedPrefabPosition.y += 150;
+        BustedPrefabPosition.y += 60;
         myRigidbody2D.velocity = new Vector2(0, 0);
+
         animator.SetBool("Dying", true);
+        animator.SetFloat("Speed", 0);
+
         Invoke("Busted", 1);
+
+        GetComponent<LadderScript>().enabled = false;       //Kann immer noch Leitern hochlaufen nach dem fangen!!! Trotz dieser Zeile!
         GetComponent<PlayerController>().enabled = false;
     }
 

@@ -52,7 +52,7 @@ public class EnemyBehaviour : MonoBehaviour
     void FixedUpdate()
     {
         GrannyPos = ChasedObject.position;
-        GrannyPos.y += 11;
+        GrannyPos.y += 15;
 
         if (!IsUnconscious)
         {
@@ -121,10 +121,14 @@ public class EnemyBehaviour : MonoBehaviour
         if (Mathf.Abs(distanceToGranny) < 5)
         {
             animator.SetTrigger("Catch");
+            myRigidbody2D.velocity = new Vector2(0, 0);
             ChasedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-            ChasedObject.GetComponent<PlayerController>().Busted();
+
+            Vector2 spawnpoint = ChasedObject.position;
+            spawnpoint.y += 60;
+            GameObject Busted = (GameObject)Instantiate(ChasedObject.GetComponent<PlayerController>().BustedPrefab, spawnpoint, Quaternion.identity);
+            GetComponent<EnemyBehaviour>().enabled = false;
             ChasedObject.GetComponent<PlayerController>().enabled = false;
-            
         }
     }
 

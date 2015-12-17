@@ -383,8 +383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcd2b4bfa67dfe4fb779b33e4ee8013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Granny: {fileID: 1797754690}
-  Audio: {fileID: 8300000, guid: b419b1b72fc366941ba0ac03bd427e25, type: 3}
 --- !u!82 &654489947
 AudioSource:
   m_ObjectHideFlags: 0
@@ -467,10 +465,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
---- !u!1 &1797754690 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 146564, guid: 6c140f629f8d0f44b9dac62e0029b109, type: 2}
-  m_PrefabInternal: {fileID: 470573696}
 --- !u!1001 &2102277572
 Prefab:
   m_ObjectHideFlags: 0

@@ -30,7 +30,7 @@ public class KidController : MonoBehaviour
     PlayerController chasedController;
 
     public Transform ChasedObject;
-    Vector2 GrannyPos;
+    public Vector2 GrannyPos;
     public float distanceToGranny;
     #endregion
 
@@ -51,7 +51,7 @@ public class KidController : MonoBehaviour
     void FixedUpdate()
     {
         GrannyPos = ChasedObject.position;
-        GrannyPos.y += 11; 
+        GrannyPos.y += 8.2f; 
 
         AmountOfRunthroughs++;
 

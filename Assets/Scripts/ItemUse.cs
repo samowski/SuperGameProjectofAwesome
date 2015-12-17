@@ -106,7 +106,6 @@ public class ItemUse : MonoBehaviour
         {
             if (HoldingPill0)
             {
-                Debug.Log("hi");
                 GameObject.Find("Rollator").GetComponent<PunchDamage>().damage += 2;
             }
             if (HoldingPill1)
