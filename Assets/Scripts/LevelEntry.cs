@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class LevelEntry : MonoBehaviour
@@ -17,6 +18,8 @@ public class LevelEntry : MonoBehaviour
     {
         rollatorCollider = GameObject.Find("Granny/Textures/Rollator").GetComponent<Collider2D>();
         menu = GameObject.Find("Menu").GetComponent<MainMenu>();
+       
+        transform.parent.FindChild("Canvas/Text").GetComponent<Text>().text = neededLevel.ToString();
 
         spriteRenderer = GetComponent<SpriteRenderer>();
         enabledMaterial = spriteRenderer.material;
