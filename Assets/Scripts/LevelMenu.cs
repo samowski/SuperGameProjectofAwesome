@@ -47,14 +47,14 @@ public class LevelMenu : MonoBehaviour
 
     public void PauseGame()
     {
-        animator.SetBool("Pause", true);
+		animator.SetBool("Pause", true);
 
         Utils.Select(continueButton);
     }
 
     public void ContinueGame()
     {
-        animator.SetBool("Pause", false);
+		animator.SetBool("Pause", false);
     }
 
     public void EnterOptions()

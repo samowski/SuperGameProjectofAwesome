@@ -25,6 +25,8 @@ public class MainMenu : MonoBehaviour
 
     PlayerController granny;
 
+	LevelEntry[] levelEntries;
+
     void Start()
     {
         SaveGame.Load(); // only on startup ?
@@ -61,6 +63,8 @@ public class MainMenu : MonoBehaviour
         sfxVolumeSlider.onValueChanged.AddListener(Utils.ChangeSfxVolume);
 
         granny = GameObject.Find("Granny").GetComponent<PlayerController>();
+
+		levelEntries = GameObject.FindObjectsOfType<LevelEntry>();
 
         if (GameProgress.instance.level == 0)
         {
@@ -153,7 +157,15 @@ public class MainMenu : MonoBehaviour
 
         granny.isControllable = true;
 
-        // TODO set active levels
+        updateLevelEntries();
+    }
+
+    void updateLevelEntries()
+    {
+        foreach (var levelEntry in levelEntries)
+        {
+            levelEntry.UpdateEnabled();
+        }
     }
 
     public void ConfirmOverride()
