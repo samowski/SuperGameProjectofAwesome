@@ -142,16 +142,16 @@ public class KidController : MonoBehaviour
             AnglesLArm.angleLimits[0].max = 360;
             AnglesRArm.angleLimits[0].min = 210;
             AnglesRArm.angleLimits[0].max = 360;
-            AnglesLFoot.angleLimits[0].min = 0;
+            AnglesLFoot.angleLimits[0].min = 1;
             AnglesLFoot.angleLimits[0].max = 90;
-            AnglesRFoot.angleLimits[0].min = 0;
+            AnglesRFoot.angleLimits[0].min = 1;
             AnglesRFoot.angleLimits[0].max = 90;
         }
         else
         {
-            AnglesLArm.angleLimits[0].min = 0;
+            AnglesLArm.angleLimits[0].min = 1;
             AnglesLArm.angleLimits[0].max = 150;
-            AnglesRArm.angleLimits[0].min = 0;
+            AnglesRArm.angleLimits[0].min = 1;
             AnglesRArm.angleLimits[0].max = 150;
             AnglesLFoot.angleLimits[0].min = 250;
             AnglesLFoot.angleLimits[0].max = 360;
