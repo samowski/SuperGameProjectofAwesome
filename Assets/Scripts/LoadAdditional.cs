@@ -7,7 +7,7 @@ public class LoadAdditional : MonoBehaviour
 
     void Awake()
     {
-        Application.LoadLevelAdditive(Level);
-        Destroy(gameObject);
+		Application.LoadLevelAdditive(Level);
+        DestroyImmediate(gameObject);
     }
 }

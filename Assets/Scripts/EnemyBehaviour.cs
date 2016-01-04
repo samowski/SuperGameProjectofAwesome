@@ -34,7 +34,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     void Start()
     {
-        if(gameObject.tag=="Police")
+        if (gameObject.tag == "Police")
         {
             ViewRange = 38;
         }
@@ -96,7 +96,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     void WalkController()
     {
-        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) >3)
+        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) > 3)
         {
             Chasing();
         }
@@ -124,9 +124,7 @@ public class EnemyBehaviour : MonoBehaviour
             myRigidbody2D.velocity = new Vector2(0, 0);
             ChasedObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
 
-            Vector2 spawnpoint = ChasedObject.position;
-            spawnpoint.y += 60;
-            GameObject Busted = (GameObject)Instantiate(ChasedObject.GetComponent<PlayerController>().BustedPrefab, spawnpoint, Quaternion.identity);
+            ChasedObject.GetComponent<PlayerController>().Busted();
             GetComponent<EnemyBehaviour>().enabled = false;
             ChasedObject.GetComponent<PlayerController>().enabled = false;
         }
@@ -141,7 +139,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         IsLookingRight = !IsLookingRight;
 
-		/*Vector3 myScale = transform.localScale;
+        /*Vector3 myScale = transform.localScale;
 		myScale.x *= -1;
 		transform.localScale = myScale;*/
 

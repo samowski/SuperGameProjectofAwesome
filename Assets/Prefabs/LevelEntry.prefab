@@ -139,7 +139,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: -.146762475, y: -1.49220741}
   serializedVersion: 2
-  m_Size: {x: 5.65667486, y: 13.2244139}
+  m_Size: {x: 6.56675005, y: 13.2244139}
 --- !u!114 &11400730
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -352,6 +352,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Size.x
+      value: 6.56675005
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

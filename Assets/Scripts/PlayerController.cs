@@ -31,12 +31,19 @@ public class PlayerController : MonoBehaviour
     public bool isControllable = true;
     static uint helper= 1;
 
+    LevelMenu levelMenu;
+
     void Start()
     {
         myRigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         helper = 1;
         animator.SetBool("Dying", false);
+
+        var go = GameObject.Find("LevelMenu");
+
+        if (go != null)
+            levelMenu = go.GetComponent<LevelMenu>();
     }
 
     void Update()
@@ -54,6 +61,14 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+        if (other.CompareTag("Finish"))
+        {
+            levelMenu.EnterLevelFinished();
+        }
+	}
 
     void FixedUpdate()
     {
@@ -168,12 +183,14 @@ public class PlayerController : MonoBehaviour
         GetComponent<PlayerController>().enabled = false;
     }
 
+
     public void Busted()
     {
         if (helper > 0)
         {
             helper--;
-            GameObject Busted = (GameObject)Instantiate(BustedPrefab, BustedPrefabPosition, Quaternion.identity);
+            if (levelMenu != null)
+                levelMenu.EnterLevelFailed();
 
         }
     }

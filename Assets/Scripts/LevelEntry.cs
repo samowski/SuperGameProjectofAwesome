@@ -36,13 +36,12 @@ public class LevelEntry : MonoBehaviour
 		if (other == rollatorCollider && GameProgress.instance.level >= neededLevel && PlayerController.IsAttacking && !isLoading)
         {
 			isLoading = true;
-			StartCoroutine(waitAndLoad());
+            Invoke("loadLevel", 0.5f);
         }
     }
         
-	IEnumerator waitAndLoad()
+	void loadLevel()
 	{
-		yield return new WaitForSeconds(0.5f);
 		menu.LoadGame(Level);
 	}
 

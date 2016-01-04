@@ -7,6 +7,8 @@ public class LevelMenu : MonoBehaviour
 {
     Animator animator;
 
+    EventSystem eventSystem;
+
     Button continueButton;
     Button optionsButton;
     Button exitButton;
@@ -22,6 +24,8 @@ public class LevelMenu : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+
+        eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
 
         continueButton = GameObject.Find("LevelMenu/PauseMenu/Main/ContinueButton").GetComponent<Button>();
         continueButton.onClick.AddListener(ContinueGame);
@@ -43,17 +47,17 @@ public class LevelMenu : MonoBehaviour
 
         sfxVolumeSlider = GameObject.Find("LevelMenu/PauseMenu/Options/SFXSlider").GetComponent<Slider>();
         sfxVolumeSlider.onValueChanged.AddListener(Utils.ChangeSfxVolume);
+       
+        var go = GameObject.Find("LevelReward");
+        unlockLevel = go != null  ? go.GetComponent<UnlockLevel>() : null;
 
-        unlockLevel = GameObject.Find("LevelReward").GetComponent<UnlockLevel>();
-
-        var go = GameObject.Find("Granny");
-        if (go != null)
-            granny = go.GetComponent<PlayerController>();
+        go = GameObject.Find("Granny");
+        granny = go != null ? go.GetComponent<PlayerController>() : null;
     }
 
-    public void PauseGame()
+    void enterMenu(string animatorState)
     {
-		animator.SetBool("Pause", true);
+        animator.SetBool(animatorState, true);
 
         if (granny != null)
             granny.isControllable = false;
@@ -61,12 +65,45 @@ public class LevelMenu : MonoBehaviour
         Utils.Select(continueButton);
     }
 
+    public void PauseGame()
+    {
+        enterMenu("Pause");
+    }
+
+    public void EnterLevelFailed()
+    {
+        enterMenu("Failed");
+    }
+
+    public void EnterLevelFinished()
+    {
+        if (unlockLevel != null)
+            unlockLevel.Unlock();
+
+        SaveGame.Save();
+
+        enterMenu("Finished");
+    }
+
     public void ContinueGame()
     {
-		animator.SetBool("Pause", false);
+        var currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (granny != null)
-            granny.isControllable = true;
+        if (currentState.IsName("Pause"))
+        {
+            animator.SetBool("Pause", false);
+
+            if (granny != null)
+                granny.isControllable = true;
+        }
+        else if (currentState.IsName("LevelFailed"))
+        {
+            Application.LoadLevel(Application.loadedLevel); 
+        }
+        else if (currentState.IsName("LevelFinished"))
+        {
+            Exit(true);
+        }
     }
 
     public void EnterOptions()
@@ -88,14 +125,9 @@ public class LevelMenu : MonoBehaviour
         Utils.Select(optionsButton);
     }
 
-    public void Exit(bool levelComplete)
+    public void Exit(bool levelFinished)
     {
-        MainMenu.showLevelSelection = levelComplete;
-
-        if (levelComplete)
-        {
-            unlockLevel.Unlock();
-        }
+        MainMenu.showLevelSelection = levelFinished;
 
         Application.LoadLevel("MainMenu");
     }
@@ -118,12 +150,39 @@ public class LevelMenu : MonoBehaviour
             {
                 LeaveOptions();
             }
+            else if (currentState.IsName("LevelFailed"))
+            {
+                if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
+                {
+                    Exit(false);
+                }
+                else
+                {
+                    Utils.Select(exitButton);
+                }
+            }
+            else if (currentState.IsName("LevelFinished"))
+            {
+                if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
+                {
+                    Exit(true);
+                }
+                else
+                {
+                    Utils.Select(exitButton);
+                }
+            }
         }
 
-        
-		if (Input.GetKeyUp(KeyCode.Z))
+        #if UNITY_EDITOR
+		if (Input.GetKeyUp(KeyCode.O))
         {
-            Exit(true);
+            EnterLevelFinished();
         }
+        if (Input.GetKeyUp(KeyCode.P))
+        {
+            EnterLevelFailed();
+        }
+        #endif
     }
 }
