@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 421126}
   - 114: {fileID: 11477834}
   - 82: {fileID: 8238000}
+  - 114: {fileID: 11486796}
   m_Layer: 0
   m_Name: Options
   m_TagString: Untagged
@@ -114,6 +115,17 @@ MonoBehaviour:
   musicVolume: 1
   sfxVolume: 0
   audioMixer: {fileID: 24100000, guid: b90a056ac67d6412f962c3cfb6c02eaf, type: 2}
+--- !u!114 &11486796
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 189640}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09e2c700c27c44928812d9d92262d550, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

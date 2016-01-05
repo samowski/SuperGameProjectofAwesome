@@ -512,7 +512,12 @@ Prefab:
       propertyPath: m_Name
       value: pillMatrix_0 (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 23a85fc251ba8294fa202047e54fec97, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &234147886

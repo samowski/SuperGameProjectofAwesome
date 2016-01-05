@@ -28,7 +28,6 @@ public class SmoothPitchChanger : MonoBehaviour
         {
             StopCoroutine(setter);
             old = current;
-
         }
         else
         {

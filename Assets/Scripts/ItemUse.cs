@@ -17,6 +17,22 @@ public class ItemUse : MonoBehaviour
 
     public Collider2D slowCollider;
 
+    Sprite pill0Sprite;
+    Sprite pill1Sprite;
+    Sprite pill2Sprite;
+
+    LevelMenu levelMenu;
+
+    void Start()
+    {
+        pill0Sprite = PillPrefab0.GetComponent<SpriteRenderer>().sprite;
+        pill1Sprite = PillPrefab1.GetComponent<SpriteRenderer>().sprite;
+        pill2Sprite = PillPrefab2.GetComponent<SpriteRenderer>().sprite;
+
+        var go = GameObject.Find("LevelMenu");
+        if (go != null) levelMenu = go.GetComponent<LevelMenu>();
+    }
+
     void FixedUpdate()
     {
         if (Input.GetButton("Fire3") && IsHoldingChocolate && UsageCooldown == 0)
@@ -40,6 +56,8 @@ public class ItemUse : MonoBehaviour
     public void HoldChocolate()
     {
         IsHoldingChocolate = true;
+        if (levelMenu != null)
+            levelMenu.SetHUDChocolate(true);
     }
 
     public void HoldPill(int pillNumber)
@@ -51,26 +69,32 @@ public class ItemUse : MonoBehaviour
             {
                 Vector3 temppos = gameObject.transform.position;
                 temppos.y += 2;
-                GameObject oldPill = (GameObject)Instantiate(HoldingPill0 ? PillPrefab0 : HoldingPill1 ? PillPrefab1 : HoldingPill2 ? PillPrefab2 : null, temppos, Quaternion.identity);
+                Instantiate(HoldingPill0 ? PillPrefab0 : HoldingPill1 ? PillPrefab1 : HoldingPill2 ? PillPrefab2 : null, temppos, Quaternion.identity);
             }
 
             IsHoldingPill = true;
             switch (pillNumber)
             {
-                case 0:
-                    HoldingPill0 = true;
-                    HoldingPill1 = false;
-                    HoldingPill2 = false;
+            case 0:
+                HoldingPill0 = true;
+                HoldingPill1 = false;
+                HoldingPill2 = false;
+                if (levelMenu != null)
+                    levelMenu.SetHUDPill(pill0Sprite);
                     break;
                 case 1:
                     HoldingPill0 = false;
                     HoldingPill1 = true;
                     HoldingPill2 = false;
+                if (levelMenu != null)
+                    levelMenu.SetHUDPill(pill1Sprite);
                     break;
                 case 2:
                     HoldingPill0 = false;
                     HoldingPill1 = false;
                     HoldingPill2 = true;
+                if (levelMenu != null)
+                    levelMenu.SetHUDPill(pill2Sprite);
                     break;
             }
         }
@@ -78,6 +102,9 @@ public class ItemUse : MonoBehaviour
 
     public void UseChocolate()
     {
+        if (levelMenu != null)
+            levelMenu.SetHUDChocolate(false);
+
         UsageCooldown = 20;
 
         if (GetComponent<PlayerController>().IsSlowed && IsHoldingChocolate)
@@ -93,13 +120,16 @@ public class ItemUse : MonoBehaviour
             {
                 temppos.x -= 4;
             }
-            GameObject chocolate1 = (GameObject)Instantiate(ChocolatePrefab, temppos, Quaternion.identity);
+            Instantiate(ChocolatePrefab, temppos, Quaternion.identity);
             slowCollider.GetComponent<KidController>().HasChocolate = true;
         }
     }
 
     public void UsePill()
     {
+        if (levelMenu != null)
+            levelMenu.SetHUDPill(null);
+
         UsageCooldown = 20;
 
         if (IsHoldingPill)

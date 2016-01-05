@@ -17,6 +17,13 @@ public class LevelMenu : MonoBehaviour
     Slider musicVolumeSlider;
     Slider sfxVolumeSlider;
 
+    Image currentPill;
+    Image currentChocolate;
+
+    Sprite defaultPillSprite;
+    Color defaultPillColor;
+    Color defaultChocolateColor;
+
     UnlockLevel unlockLevel;
 
     PlayerController granny;
@@ -48,6 +55,13 @@ public class LevelMenu : MonoBehaviour
         sfxVolumeSlider = GameObject.Find("LevelMenu/PauseMenu/Options/SFXSlider").GetComponent<Slider>();
         sfxVolumeSlider.onValueChanged.AddListener(Utils.ChangeSfxVolume);
        
+        currentPill = GameObject.Find("LevelMenu/HUD/Pill/Image").GetComponent<Image>();
+        currentChocolate = GameObject.Find("LevelMenu/HUD/Chocolate/Image").GetComponent<Image>();
+
+        defaultPillSprite = currentPill.sprite;
+        defaultPillColor = currentPill.color;
+        defaultChocolateColor = currentChocolate.color;
+
         var go = GameObject.Find("LevelReward");
         unlockLevel = go != null  ? go.GetComponent<UnlockLevel>() : null;
 
@@ -123,6 +137,25 @@ public class LevelMenu : MonoBehaviour
         animator.SetBool("Options", false);
 
         Utils.Select(optionsButton);
+    }
+
+    public void SetHUDPill(Sprite pillSprite)
+    {
+        if (pillSprite != null)
+        {
+            currentPill.sprite = pillSprite;
+            currentPill.color = Color.white;
+        }
+        else
+        {
+            currentPill.sprite = defaultPillSprite;
+            currentPill.color = defaultPillColor;
+        }
+    }
+
+    public void SetHUDChocolate(bool hasChocolate)
+    {
+        currentChocolate.color = hasChocolate ? Color.white : defaultChocolateColor;
     }
 
     public void Exit(bool levelFinished)
