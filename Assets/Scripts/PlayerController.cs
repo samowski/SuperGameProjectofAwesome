@@ -32,6 +32,7 @@ public class PlayerController : MonoBehaviour
     static uint helper= 1;
 
     LevelMenu levelMenu;
+    SmoothPitchChanger smoothPitchChanger;
 
     void Start()
     {
@@ -41,9 +42,10 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("Dying", false);
 
         var go = GameObject.Find("LevelMenu");
+        if (go != null) levelMenu = go.GetComponent<LevelMenu>();
 
-        if (go != null)
-            levelMenu = go.GetComponent<LevelMenu>();
+        go = GameObject.Find("Options");
+        if (go != null) smoothPitchChanger = go.GetComponent<SmoothPitchChanger>();
     }
 
     void Update()
@@ -150,13 +152,14 @@ public class PlayerController : MonoBehaviour
 
     public void SetPillSpeed(int speed)
     {
+        Debug.Log("fhfh");
         if (speed <= fixedSpeed)
         {
-            GameObject.Find("Sound").GetComponent<AudioSource>().pitch = 0.7f;
+            if (smoothPitchChanger != null) smoothPitchChanger.SetPitch(0.7f, 2.0f);
         }
         else
         {
-            GameObject.Find("Sound").GetComponent<AudioSource>().pitch = 1.2f;
+            if (smoothPitchChanger != null) smoothPitchChanger.SetPitch(1.2f, 2.0f);
         }
         fixedSpeed = speed;
         Invoke("SetNormalSpeed", 6);
@@ -164,7 +167,8 @@ public class PlayerController : MonoBehaviour
 
     public void SetNormalSpeed()
     {
-        GameObject.Find("Sound").GetComponent<AudioSource>().pitch = 1;
+
+        if (smoothPitchChanger != null) smoothPitchChanger.SetPitch(1.0f, 0.5f);
         fixedSpeed = 30;
     }
 
@@ -189,9 +193,7 @@ public class PlayerController : MonoBehaviour
         if (helper > 0)
         {
             helper--;
-            if (levelMenu != null)
-                levelMenu.EnterLevelFailed();
-
+            if (levelMenu != null) levelMenu.EnterLevelFailed();
         }
     }
 }
