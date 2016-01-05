@@ -3,9 +3,6 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject BustedPrefab;
-    private Vector3 BustedPrefabPosition;
-
     //Velocity
     public float CurrentSpeed = 30;
     float fixedSpeed = 30;
@@ -152,7 +149,6 @@ public class PlayerController : MonoBehaviour
 
     public void SetPillSpeed(int speed)
     {
-        Debug.Log("fhfh");
         if (speed <= fixedSpeed)
         {
             if (smoothPitchChanger != null) smoothPitchChanger.SetPitch(0.7f, 2.0f);
@@ -174,8 +170,6 @@ public class PlayerController : MonoBehaviour
 
     public void ApplyGrannyDamage()
     {
-        BustedPrefabPosition = gameObject.transform.position;
-        BustedPrefabPosition.y += 60;
         myRigidbody2D.velocity = new Vector2(0, 0);
 
         animator.SetBool("Dying", true);
@@ -186,8 +180,7 @@ public class PlayerController : MonoBehaviour
         GetComponent<LadderScript>().enabled = false;       //Kann immer noch Leitern hochlaufen nach dem fangen!!! Trotz dieser Zeile!
         GetComponent<PlayerController>().enabled = false;
     }
-
-
+        
     public void Busted()
     {
         if (helper > 0)
