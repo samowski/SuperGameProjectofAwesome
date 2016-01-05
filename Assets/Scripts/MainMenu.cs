@@ -82,14 +82,7 @@ public class MainMenu : MonoBehaviour
         {
             granny.isControllable = false;
 
-            if (GameProgress.instance.level == 0)
-            {
-                Utils.Select(newGameButton);
-            }
-            else
-            {
-                Utils.Select(continueButton);
-            }
+            selectLeftButton();
         }
     }
         
@@ -198,37 +191,104 @@ public class MainMenu : MonoBehaviour
         Utils.Select(continueButton);
     }
 
+    void handleBackKey()
+    {
+        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (currentState.IsName("MainOptions"))
+        {
+            LeaveOptions();
+        }
+        else if (currentState.IsName("MainOverride"))
+        {
+            CancelOverride();
+        }
+        else if (currentState.IsName("Main"))
+        {
+            if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
+            {
+                Exit();
+            }
+            else
+            {
+                Utils.Select(exitButton);
+            }
+        }
+        else if (currentState.IsName("MainLevelSelect"))
+        {
+            CancelLevelSelect();
+        }
+    }
+
+    void selectLeftButton()
+    {
+        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (currentState.IsName("MainOptions"))
+        {
+            Utils.Select(backButton);
+        }
+        else if (currentState.IsName("MainOverride"))
+        {
+            Utils.Select(yesButton); 
+        }
+        else if (currentState.IsName("Main"))
+        {
+            if (GameProgress.instance.level == 0)
+            {
+                Utils.Select(newGameButton);
+            }
+            else
+            {
+                Utils.Select(continueButton);
+            }
+        }
+    }
+
+    void selectRightButton()
+    {
+        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (currentState.IsName("MainOptions"))
+        {
+            Utils.Select(backButton);
+        }
+        else if (currentState.IsName("MainOverride"))
+        {
+            Utils.Select(noButton); 
+        }
+        else if (currentState.IsName("Main"))
+        {
+            Utils.Select(exitButton);
+        }
+    }
+
+    void handleLostFocus()
+    {
+        float verticalAxis = Input.GetAxis("Horizontal");
+
+        if (verticalAxis > 0)
+        {
+            selectLeftButton();
+        }
+        else if (verticalAxis < 0)
+        {
+            selectRightButton();
+        }
+    }
+
     void Update()
     {
         if (Input.GetButtonUp("Cancel"))
         {
-            var currentState = animator.GetCurrentAnimatorStateInfo(0);
-
-            if (currentState.IsName("MainOptions"))
-            {
-                LeaveOptions();
-            }
-            else if (currentState.IsName("MainOverride"))
-            {
-                CancelOverride();
-            }
-            else if (currentState.IsName("Main"))
-            {
-                if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
-                {
-                    Exit();
-                }
-                else
-                {
-                    Utils.Select(exitButton);
-                }
-            }
-            else if (currentState.IsName("MainLevelSelect"))
-            {
-                CancelLevelSelect();
-            }
+            handleBackKey();
         }
-          
+
+        if (eventSystem.currentSelectedGameObject == null)
+        {
+            handleLostFocus();   
+        }
+
         #if UNITY_EDITOR
         if (Input.GetKeyUp(KeyCode.S))
         {

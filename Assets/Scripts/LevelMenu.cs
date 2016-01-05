@@ -164,47 +164,99 @@ public class LevelMenu : MonoBehaviour
 
         Application.LoadLevel("MainMenu");
     }
-        
+
+    void handleBackKey()
+    {
+        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (currentState.IsName("LevelMain"))
+        {
+            PauseGame();
+        }
+        else if (currentState.IsName("Pause"))
+        {
+            ContinueGame();
+        }
+        else if (currentState.IsName("Options"))
+        {
+            LeaveOptions();
+        }
+        else if (currentState.IsName("LevelFailed"))
+        {
+            if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
+            {
+                Exit(false);
+            }
+            else
+            {
+                Utils.Select(exitButton);
+            }
+        }
+        else if (currentState.IsName("LevelFinished"))
+        {
+            if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
+            {
+                Exit(true);
+            }
+            else
+            {
+                Utils.Select(exitButton);
+            }
+        }
+    }
+
+    void selectLeftButton()
+    {
+        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (currentState.IsName("Pause") || currentState.IsName("LevelFailed") || currentState.IsName("LevelFinished"))
+        {
+            Utils.Select(continueButton);
+        }
+        else if (currentState.IsName("Options"))
+        {
+            Utils.Select(backButton); 
+        }
+    }
+
+    void selectRightButton()
+    {
+        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (currentState.IsName("Pause") || currentState.IsName("LevelFailed") || currentState.IsName("LevelFinished"))
+        {
+            Utils.Select(exitButton);
+        }
+        else if (currentState.IsName("Options"))
+        {
+            Utils.Select(backButton); 
+        }
+    }
+
+    void handleLostFocus()
+    {
+        float verticalAxis = Input.GetAxis("Horizontal");
+
+        if (verticalAxis > 0)
+        {
+            selectLeftButton();
+        }
+        else if (verticalAxis < 0)
+        {
+            selectRightButton();
+        }
+    }
+
     void Update()
     {
         if (Input.GetButtonUp("Cancel"))
         {
-            var currentState = animator.GetCurrentAnimatorStateInfo(0);
+            handleBackKey();   
+        }
 
-            if (currentState.IsName("LevelMain"))
-            {
-                PauseGame();
-            }
-            else if (currentState.IsName("Pause"))
-            {
-                ContinueGame();
-            }
-            else if (currentState.IsName("Options"))
-            {
-                LeaveOptions();
-            }
-            else if (currentState.IsName("LevelFailed"))
-            {
-                if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
-                {
-                    Exit(false);
-                }
-                else
-                {
-                    Utils.Select(exitButton);
-                }
-            }
-            else if (currentState.IsName("LevelFinished"))
-            {
-                if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
-                {
-                    Exit(true);
-                }
-                else
-                {
-                    Utils.Select(exitButton);
-                }
-            }
+        if (eventSystem.currentSelectedGameObject == null)
+        {
+            handleLostFocus();   
         }
 
         #if UNITY_EDITOR
