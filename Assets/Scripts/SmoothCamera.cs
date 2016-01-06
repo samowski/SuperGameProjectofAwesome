@@ -3,24 +3,44 @@ using System.Collections;
 
 public class SmoothCamera : MonoBehaviour
 {
-
-    // Use this for initialization
     public float DampTime = 0.15f;
-    private Vector3 velocity = Vector3.zero;
-    public Transform FollowedObject;
-    private Vector3 GrannyPos;
 
-    // Update is called once per frame
+    public Transform target;
+    public Vector3 offset;
+
+    public Transform leftBorder;
+    public Transform rightBorder;
+    public Transform topBorder;
+    public Transform bottomBorder;
+
+    Vector3 velocity = Vector3.zero;
+    Camera followCamera;
+
+    void Start()
+    {
+        followCamera = GetComponent<Camera>();
+    }
+
     void FixedUpdate()
     {
-        GrannyPos = FollowedObject.position;
-        GrannyPos.y += 17;
-        if (FollowedObject)
+        Vector3 targetPosition = target.position;
+        targetPosition += offset;
+        if (target)
         {
-            Vector3 point = GetComponent<Camera>().WorldToViewportPoint(GrannyPos);
-            Vector3 delta = GrannyPos - GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0.5f, 0.5f, point.z));
-            Vector3 destination = transform.position + delta;
-            transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, DampTime);
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, DampTime);
+
+            float halfCameraWidth = followCamera.orthographicSize * followCamera.aspect;
+            float halfCameraHeight = followCamera.orthographicSize;
+
+            float x = Mathf.Clamp(transform.position.x,
+                leftBorder != null ? leftBorder.position.x + halfCameraWidth : float.NegativeInfinity,
+                rightBorder != null ?  rightBorder.position.x - halfCameraWidth : float.PositiveInfinity);
+
+            float y = Mathf.Clamp(transform.position.y,
+                bottomBorder != null ? bottomBorder.position.y + halfCameraHeight : float.NegativeInfinity,
+                topBorder != null ?  topBorder.position.y - halfCameraHeight : float.PositiveInfinity);
+
+            transform.position = new Vector3(x, y, transform.position.z);
         }
     }
 }
