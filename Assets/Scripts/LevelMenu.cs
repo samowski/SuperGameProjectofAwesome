@@ -20,7 +20,7 @@ public class LevelMenu : MonoBehaviour
     Image currentPill;
     Image currentChocolate;
 
-    Sprite defaultPillSprite;
+    Material defaultPillMaterial;
     Color defaultPillColor;
     Color defaultChocolateColor;
 
@@ -58,7 +58,7 @@ public class LevelMenu : MonoBehaviour
         currentPill = GameObject.Find("LevelMenu/HUD/Pill/Image").GetComponent<Image>();
         currentChocolate = GameObject.Find("LevelMenu/HUD/Chocolate/Image").GetComponent<Image>();
 
-        defaultPillSprite = currentPill.sprite;
+        defaultPillMaterial = currentPill.material;
         defaultPillColor = currentPill.color;
         defaultChocolateColor = currentChocolate.color;
 
@@ -139,16 +139,16 @@ public class LevelMenu : MonoBehaviour
         Utils.Select(optionsButton);
     }
 
-    public void SetHUDPill(Sprite pillSprite)
+    public void SetHUDPill(Pill.Effect effect)
     {
-        if (pillSprite != null)
+        if (effect != Pill.Effect.Nothing)
         {
-            currentPill.sprite = pillSprite;
+            currentPill.material = Pill.getMaterial(effect);
             currentPill.color = Color.white;
         }
         else
         {
-            currentPill.sprite = defaultPillSprite;
+            currentPill.material = defaultPillMaterial;
             currentPill.color = defaultPillColor;
         }
     }

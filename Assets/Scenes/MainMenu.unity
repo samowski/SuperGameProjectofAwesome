@@ -2681,7 +2681,6 @@ GameObject:
   - 114: {fileID: 1355646967}
   - 58: {fileID: 1355646966}
   - 58: {fileID: 1355646965}
-  - 114: {fileID: 1355646964}
   m_Layer: 8
   m_Name: Granny
   m_TagString: Untagged
@@ -2703,19 +2702,6 @@ Transform:
   - {fileID: 1513456028}
   m_Father: {fileID: 0}
   m_RootOrder: 3
---- !u!114 &1355646964
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11467164, guid: 6c140f629f8d0f44b9dac62e0029b109,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1355646962}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aeb258f654e4c041aff537356c367e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ClimbSpeed: 30
 --- !u!58 &1355646965
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -2756,7 +2742,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebbdf9b55074a314a9a007f2109e20b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BustedPrefab: {fileID: 0}
   CurrentSpeed: 30
   JumpForce: 2200
   IsSlowed: 0

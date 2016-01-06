@@ -10,6 +10,7 @@ TagManager:
   - Chocolate
   - Ladder
   - ConstructionSite
+  - Pill
   layers:
   - Default
   - TransparentFX

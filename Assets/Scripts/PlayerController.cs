@@ -73,6 +73,8 @@ public class PlayerController : MonoBehaviour
     {
         if (isControllable)
         {
+            // itemstuff ???
+
             float hor = Input.GetAxis("Horizontal");
 
 			myRigidbody2D.velocity = new Vector2(hor * CurrentSpeed, myRigidbody2D.velocity.y);
