@@ -82,6 +82,8 @@ public class LevelMenu : MonoBehaviour
     public void PauseGame()
     {
         enterMenu("Pause");
+
+		Time.timeScale = 0.0f;
     }
 
     public void EnterLevelFailed()
@@ -118,6 +120,8 @@ public class LevelMenu : MonoBehaviour
         {
             Exit(true);
         }
+
+		Time.timeScale = 1.0f;
     }
 
     public void EnterOptions()
