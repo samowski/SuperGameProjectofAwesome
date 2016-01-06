@@ -239,7 +239,7 @@ public class LevelMenu : MonoBehaviour
 
     void handleLostFocus()
     {
-        float verticalAxis = Input.GetAxis("Horizontal");
+        float verticalAxis = Input.GetAxisRaw("Horizontal");
 
         if (verticalAxis > 0)
         {
