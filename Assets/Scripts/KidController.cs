@@ -89,7 +89,7 @@ public class KidController : MonoBehaviour
 
     void WalkController()
     {
-        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) > 2 && !HasChocolate)
+		if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(transform.position.x - GrannyPos.x) > 2 && !HasChocolate)
         {
             myRigidbody2D.velocity = new Vector2(distanceToGranny < 0 ? MaxSpeed * 3 : -MaxSpeed * 3, myRigidbody2D.velocity.y);
         }

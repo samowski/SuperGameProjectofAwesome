@@ -96,7 +96,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     void WalkController()
     {
-        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(distanceToGranny) > 3)
+        if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(transform.position.x - GrannyPos.x) > 3)
         {
             Chasing();
         }
