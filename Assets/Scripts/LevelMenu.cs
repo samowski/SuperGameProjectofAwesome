@@ -1,278 +1,284 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Collections;
 
 public class LevelMenu : MonoBehaviour
 {
-    Animator animator;
+	Animator animator;
 
-    EventSystem eventSystem;
+	EventSystem eventSystem;
 
-    Button continueButton;
-    Button optionsButton;
-    Button exitButton;
-    Button backButton;
+	Button continueButton;
+	Button optionsButton;
+	Button exitButton;
+	Button backButton;
 
-    Slider musicVolumeSlider;
-    Slider sfxVolumeSlider;
+	Slider musicVolumeSlider;
+	Slider sfxVolumeSlider;
 
-    Image currentPill;
-    Image currentChocolate;
+	Image currentPill;
+	Image currentChocolate;
 
-    Material defaultPillMaterial;
-    Color defaultPillColor;
-    Color defaultChocolateColor;
+	Material defaultPillMaterial;
+	Color defaultPillColor;
+	Color defaultChocolateColor;
 
-    UnlockLevel unlockLevel;
+	UnlockLevel unlockLevel;
 
-    PlayerController granny;
+	PlayerController granny;
 
-    void Start()
-    {
-        animator = GetComponent<Animator>();
+	void Start()
+	{
+		animator = GetComponent<Animator>();
 
-        eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
+		eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
 
-        continueButton = GameObject.Find("LevelMenu/PauseMenu/Main/ContinueButton").GetComponent<Button>();
-        continueButton.onClick.AddListener(ContinueGame);
+		continueButton = GameObject.Find("LevelMenu/PauseMenu/Main/ContinueButton").GetComponent<Button>();
+		continueButton.onClick.AddListener(ContinueGame);
 
-        optionsButton = GameObject.Find("LevelMenu/PauseMenu/Main/OptionsButton").GetComponent<Button>();
-        optionsButton.onClick.AddListener(EnterOptions);
+		optionsButton = GameObject.Find("LevelMenu/PauseMenu/Main/OptionsButton").GetComponent<Button>();
+		optionsButton.onClick.AddListener(EnterOptions);
 
-        exitButton = GameObject.Find("LevelMenu/PauseMenu/Main/ExitButton").GetComponent<Button>();
-        exitButton.onClick.AddListener(delegate
-        {
-            Exit(false);
-        });
+		exitButton = GameObject.Find("LevelMenu/PauseMenu/Main/ExitButton").GetComponent<Button>();
+		exitButton.onClick.AddListener(delegate
+			{
+				Exit(false);
+			});
 
-        backButton = GameObject.Find("LevelMenu/PauseMenu/Options/BackButton").GetComponent<Button>();
-        backButton.onClick.AddListener(LeaveOptions);
+		backButton = GameObject.Find("LevelMenu/PauseMenu/Options/BackButton").GetComponent<Button>();
+		backButton.onClick.AddListener(LeaveOptions);
 
-        musicVolumeSlider = GameObject.Find("LevelMenu/PauseMenu/Options/MusicSlider").GetComponent<Slider>();
-        musicVolumeSlider.onValueChanged.AddListener(Utils.ChangeMusicVolume);
+		musicVolumeSlider = GameObject.Find("LevelMenu/PauseMenu/Options/MusicSlider").GetComponent<Slider>();
+		musicVolumeSlider.onValueChanged.AddListener(Utils.ChangeMusicVolume);
 
-        sfxVolumeSlider = GameObject.Find("LevelMenu/PauseMenu/Options/SFXSlider").GetComponent<Slider>();
-        sfxVolumeSlider.onValueChanged.AddListener(Utils.ChangeSfxVolume);
-       
-        currentPill = GameObject.Find("LevelMenu/HUD/Pill/Image").GetComponent<Image>();
-        currentChocolate = GameObject.Find("LevelMenu/HUD/Chocolate/Image").GetComponent<Image>();
+		sfxVolumeSlider = GameObject.Find("LevelMenu/PauseMenu/Options/SFXSlider").GetComponent<Slider>();
+		sfxVolumeSlider.onValueChanged.AddListener(Utils.ChangeSfxVolume);
 
-        defaultPillMaterial = currentPill.material;
-        defaultPillColor = currentPill.color;
-        defaultChocolateColor = currentChocolate.color;
+		currentPill = GameObject.Find("LevelMenu/HUD/Pill/Image").GetComponent<Image>();
+		currentChocolate = GameObject.Find("LevelMenu/HUD/Chocolate/Image").GetComponent<Image>();
 
-        var go = GameObject.Find("LevelReward");
-        unlockLevel = go != null  ? go.GetComponent<UnlockLevel>() : null;
+		defaultPillMaterial = currentPill.material;
+		defaultPillColor = currentPill.color;
+		defaultChocolateColor = currentChocolate.color;
 
-        go = GameObject.Find("Granny");
-        granny = go != null ? go.GetComponent<PlayerController>() : null;
-    }
+		var gameObject = GameObject.Find("LevelReward");
+		unlockLevel = gameObject != null ? gameObject.GetComponent<UnlockLevel>() : null;
 
-    void enterMenu(string animatorState)
-    {
-        animator.SetBool(animatorState, true);
+		gameObject = GameObject.Find("Granny");
+		granny = gameObject != null ? gameObject.GetComponent<PlayerController>() : null;
+	}
 
-        if (granny != null)
-            granny.isControllable = false;
+	void enterMenu(string animatorState)
+	{
+		animator.SetBool(animatorState, true);
 
-        Utils.Select(continueButton);
-    }
+		if (granny != null)
+		{
+			granny.IsControllable = false;
+		}
 
-    public void PauseGame()
-    {
-        enterMenu("Pause");
+		Utils.Select(continueButton);
+	}
+
+	public void PauseGame()
+	{
+		enterMenu("Pause");
 
 		Time.timeScale = 0.0f;
-    }
+	}
 
-    public void EnterLevelFailed()
-    {
-        enterMenu("Failed");
-    }
+	public void EnterLevelFailed()
+	{
+		enterMenu("Failed");
+	}
 
-    public void EnterLevelFinished()
-    {
-        if (unlockLevel != null)
-            unlockLevel.Unlock();
+	public void EnterLevelFinished()
+	{
+		if (unlockLevel != null)
+		{
+			unlockLevel.Unlock();
+		}
 
+		SaveGame.Save();
 
-        SaveGame.Save();
+		enterMenu("Finished");
+	}
 
-        enterMenu("Finished");
-    }
+	public void ContinueGame()
+	{
+		var currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-    public void ContinueGame()
-    {
-        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+		if (currentState.IsName("Pause"))
+		{
+			animator.SetBool("Pause", false);
 
-        if (currentState.IsName("Pause"))
-        {
-            animator.SetBool("Pause", false);
-
-            if (granny != null)
-                granny.isControllable = true;
-        }
-        else if (currentState.IsName("LevelFailed"))
-        {
-            Application.LoadLevel(Application.loadedLevel); 
-        }
-        else if (currentState.IsName("LevelFinished"))
-        {
-            Exit(true);
-        }
+			if (granny != null)
+			{
+				granny.IsControllable = true;
+			}
+		}
+		else if (currentState.IsName("LevelFailed"))
+		{
+			Application.LoadLevel(Application.loadedLevel); 
+		}
+		else if (currentState.IsName("LevelFinished"))
+		{
+			Exit(true);
+		}
 
 		Time.timeScale = 1.0f;
-    }
+	}
 
-    public void EnterOptions()
-    {
-        musicVolumeSlider.value = Options.instance.MusicVolume;
-        sfxVolumeSlider.value = Options.instance.SfxVolume;
+	public void EnterOptions()
+	{
+		musicVolumeSlider.value = Options.Instance.MusicVolume;
+		sfxVolumeSlider.value = Options.Instance.SfxVolume;
 
-        animator.SetBool("Options", true);
+		animator.SetBool("Options", true);
 
-        Utils.Select(backButton);
-    }
+		Utils.Select(backButton);
+	}
 
-    public void LeaveOptions()
-    {
-        SaveGame.Save();
+	public void LeaveOptions()
+	{
+		SaveGame.Save();
 
-        animator.SetBool("Options", false);
+		animator.SetBool("Options", false);
 
-        Utils.Select(optionsButton);
-    }
+		Utils.Select(optionsButton);
+	}
 
-    public void SetHUDPill(Pill.Effect effect)
-    {
-        if (effect != Pill.Effect.Nothing)
-        {
-            currentPill.material = Pill.getMaterial(effect);
-            currentPill.color = Color.white;
-        }
-        else
-        {
-            currentPill.material = defaultPillMaterial;
-            currentPill.color = defaultPillColor;
-        }
-    }
+	public void SetHUDPill(Pill.Effect effect)
+	{
+		if (effect != Pill.Effect.Nothing)
+		{
+			currentPill.material = Pill.getMaterial(effect);
+			currentPill.color = Color.white;
+		}
+		else
+		{
+			currentPill.material = defaultPillMaterial;
+			currentPill.color = defaultPillColor;
+		}
+	}
 
-    public void SetHUDChocolate(bool hasChocolate)
-    {
-        currentChocolate.color = hasChocolate ? Color.white : defaultChocolateColor;
-    }
+	public void SetHUDChocolate(bool hasChocolate)
+	{
+		currentChocolate.color = hasChocolate ? Color.white : defaultChocolateColor;
+	}
 
-    public void Exit(bool levelFinished)
-    {
-        MainMenu.showLevelSelection = levelFinished;
+	public void Exit(bool levelFinished)
+	{
+		MainMenu.ShowLevelSelection = levelFinished;
 
-        Application.LoadLevel("MainMenu");
-    }
+		Time.timeScale = 1.0f;
 
-    void handleBackKey()
-    {
-        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+		Application.LoadLevel("MainMenu");
+	}
 
-        if (currentState.IsName("LevelMain"))
-        {
-            PauseGame();
-        }
-        else if (currentState.IsName("Pause"))
-        {
-            ContinueGame();
-        }
-        else if (currentState.IsName("Options"))
-        {
-            LeaveOptions();
-        }
-        else if (currentState.IsName("LevelFailed"))
-        {
-            if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
-            {
-                Exit(false);
-            }
-            else
-            {
-                Utils.Select(exitButton);
-            }
-        }
-        else if (currentState.IsName("LevelFinished"))
-        {
-            if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
-            {
-                Exit(true);
-            }
-            else
-            {
-                Utils.Select(exitButton);
-            }
-        }
-    }
+	void handleBackKey()
+	{
+		var currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-    void selectLeftButton()
-    {
-        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+		if (currentState.IsName("LevelMain"))
+		{
+			PauseGame();
+		}
+		else if (currentState.IsName("Pause"))
+		{
+			ContinueGame();
+		}
+		else if (currentState.IsName("Options"))
+		{
+			LeaveOptions();
+		}
+		else if (currentState.IsName("LevelFailed"))
+		{
+			if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
+			{
+				Exit(false);
+			}
+			else
+			{
+				Utils.Select(exitButton);
+			}
+		}
+		else if (currentState.IsName("LevelFinished"))
+		{
+			if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
+			{
+				Exit(true);
+			}
+			else
+			{
+				Utils.Select(exitButton);
+			}
+		}
+	}
 
-        if (currentState.IsName("Pause") || currentState.IsName("LevelFailed") || currentState.IsName("LevelFinished"))
-        {
-            Utils.Select(continueButton);
-        }
-        else if (currentState.IsName("Options"))
-        {
-            Utils.Select(backButton); 
-        }
-    }
+	void selectLeftButton()
+	{
+		var currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-    void selectRightButton()
-    {
-        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+		if (currentState.IsName("Pause") || currentState.IsName("LevelFailed") || currentState.IsName("LevelFinished"))
+		{
+			Utils.Select(continueButton);
+		}
+		else if (currentState.IsName("Options"))
+		{
+			Utils.Select(backButton); 
+		}
+	}
 
-        if (currentState.IsName("Pause") || currentState.IsName("LevelFailed") || currentState.IsName("LevelFinished"))
-        {
-            Utils.Select(exitButton);
-        }
-        else if (currentState.IsName("Options"))
-        {
-            Utils.Select(backButton); 
-        }
-    }
+	void selectRightButton()
+	{
+		var currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-    void handleLostFocus()
-    {
-        float verticalAxis = Input.GetAxisRaw("Horizontal");
+		if (currentState.IsName("Pause") || currentState.IsName("LevelFailed") || currentState.IsName("LevelFinished"))
+		{
+			Utils.Select(exitButton);
+		}
+		else if (currentState.IsName("Options"))
+		{
+			Utils.Select(backButton); 
+		}
+	}
 
-        if (verticalAxis > 0)
-        {
-            selectLeftButton();
-        }
-        else if (verticalAxis < 0)
-        {
-            selectRightButton();
-        }
-    }
+	void handleLostFocus()
+	{
+		float verticalAxis = Input.GetAxisRaw("Horizontal");
 
-    void Update()
-    {
-        if (Input.GetButtonUp("Cancel"))
-        {
-            handleBackKey();   
-        }
+		if (verticalAxis > 0)
+		{
+			selectLeftButton();
+		}
+		else if (verticalAxis < 0)
+		{
+			selectRightButton();
+		}
+	}
 
-        if (eventSystem.currentSelectedGameObject == null)
-        {
-            handleLostFocus();   
-        }
+	void Update()
+	{
+		if (Input.GetButtonUp("Cancel"))
+		{
+			handleBackKey();   
+		}
 
-        #if UNITY_EDITOR
+		if (eventSystem.currentSelectedGameObject == null)
+		{
+			handleLostFocus();   
+		}
+
+		#if UNITY_EDITOR
 		if (Input.GetKeyUp(KeyCode.O))
-        {
-            EnterLevelFinished();
-        }
-        if (Input.GetKeyUp(KeyCode.P))
-        {
-            EnterLevelFailed();
-        }
-        #endif
-    }
+		{
+			EnterLevelFinished();
+		}
+		if (Input.GetKeyUp(KeyCode.P))
+		{
+			EnterLevelFailed();
+		}
+		#endif
+	}
 }

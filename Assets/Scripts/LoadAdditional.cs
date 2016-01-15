@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class LoadAdditional : MonoBehaviour
 {
-    public int Level;
+	public int Level;
 
-    void Awake()
-    {
+	void Awake()
+	{
 		Application.LoadLevelAdditive(Level);
-        DestroyImmediate(gameObject);
-    }
+		DestroyImmediate(gameObject);
+	}
 }

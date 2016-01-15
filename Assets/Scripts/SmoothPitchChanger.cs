@@ -3,54 +3,53 @@ using System.Collections;
 
 public class SmoothPitchChanger : MonoBehaviour
 {
-    AudioSource audioSource;
+	AudioSource audioSource;
 
-    bool isRunning = false;
-    Coroutine setter;
+	bool isRunning = false;
+	Coroutine setter;
 
-    float old;
-    float target;
-    float current;
+	float old;
+	float target;
+	float current;
 
-    float interpolationTime;
+	float interpolationTime;
 
-    void Start()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
-	
-    public void SetPitch(float pitch, float time)
-    {
-        target = pitch;
-        this.interpolationTime = time;
+	void Start()
+	{
+		audioSource = GetComponent<AudioSource>();
+	}
 
-        if (isRunning)
-        {
-            StopCoroutine(setter);
-            old = current;
-        }
-        else
-        {
-            old = audioSource.pitch;
-        }
+	public void SetPitch(float pitch, float time)
+	{
+		target = pitch;
+		this.interpolationTime = time;
 
-        isRunning = true;
-        setter = StartCoroutine(interpolate());
-    }
+		if (isRunning)
+		{
+			StopCoroutine(setter);
+			old = current;
+		}
+		else
+		{
+			old = audioSource.pitch;
+		}
 
-    IEnumerator interpolate()
-    {
-        float startTime = Time.time;
-        float endTime = startTime + interpolationTime;
+		isRunning = true;
+		setter = StartCoroutine(interpolate());
+	}
 
-        while (Time.time < endTime)
-        {
-            current = Mathf.Lerp(target, old, (endTime - Time.time) / interpolationTime);
-            audioSource.pitch = current;
-            yield return null;
-        }
+	IEnumerator interpolate()
+	{
+		float endTime = Time.time + interpolationTime;
 
-        audioSource.pitch = target;
-        isRunning = false;
-    }
+		while (Time.time < endTime)
+		{
+			current = Mathf.Lerp(target, old, (endTime - Time.time) / interpolationTime);
+			audioSource.pitch = current;
+			yield return null;
+		}
+
+		audioSource.pitch = target;
+		isRunning = false;
+	}
 }

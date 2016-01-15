@@ -114,7 +114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicVolume: 1
   sfxVolume: 0
-  audioMixer: {fileID: 24100000, guid: b90a056ac67d6412f962c3cfb6c02eaf, type: 2}
+  Mixer: {fileID: 24100000, guid: b90a056ac67d6412f962c3cfb6c02eaf, type: 2}
 --- !u!114 &11486796
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -132,7 +132,12 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: Mixer
+      value: 
+      objectReference: {fileID: 24100000, guid: b90a056ac67d6412f962c3cfb6c02eaf,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 189640}

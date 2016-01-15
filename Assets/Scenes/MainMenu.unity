@@ -1960,12 +1960,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DampTime: .150000006
-  target: {fileID: 1355646963}
-  offset: {x: 0, y: 24, z: -10}
-  leftBorder: {fileID: 239762281}
-  rightBorder: {fileID: 1232367534}
-  topBorder: {fileID: 0}
-  bottomBorder: {fileID: 0}
+  Target: {fileID: 1355646963}
+  Offset: {x: 0, y: 24, z: -10}
+  LeftBorder: {fileID: 239762281}
+  RightBorder: {fileID: 1232367534}
+  TopBorder: {fileID: 0}
+  BottomBorder: {fileID: 0}
 --- !u!1 &978815035
 GameObject:
   m_ObjectHideFlags: 0
@@ -2834,7 +2834,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294960383
   IsLookingRight: 1
-  isControllable: 1
+  IsControllable: 1
 --- !u!60 &1355646968
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -3330,7 +3330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c2653319a18a4ec09c053a2531aa9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cloudSprites:
+  CloudSprites:
   - {fileID: 21300000, guid: 1bbee4138c9874168bdceb70fe1b0d87, type: 3}
   - {fileID: 21300004, guid: 1bbee4138c9874168bdceb70fe1b0d87, type: 3}
   - {fileID: 21300006, guid: 1bbee4138c9874168bdceb70fe1b0d87, type: 3}
@@ -3338,10 +3338,10 @@ MonoBehaviour:
   - {fileID: 21300002, guid: 1bbee4138c9874168bdceb70fe1b0d87, type: 3}
   - {fileID: 21300008, guid: 1bbee4138c9874168bdceb70fe1b0d87, type: 3}
   - {fileID: 21300012, guid: 1bbee4138c9874168bdceb70fe1b0d87, type: 3}
-  maxHeight: 90
-  minHeight: 25
-  speed: .800000012
-  cloudsPerUnit: .0299999993
+  MaxHeight: 90
+  MinHeight: 25
+  Speed: .800000012
+  CloudsPerUnit: .0299999993
 --- !u!4 &1491278467
 Transform:
   m_ObjectHideFlags: 0
@@ -3623,7 +3623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd311315828f62c47b3bbc85969f6691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  Damage: 1
 --- !u!212 &1589600086
 SpriteRenderer:
   m_ObjectHideFlags: 0

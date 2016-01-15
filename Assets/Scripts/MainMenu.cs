@@ -1,314 +1,311 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Collections;
 
 public class MainMenu : MonoBehaviour
 {
+	public static bool ShowLevelSelection = false;
 
-    public static bool showLevelSelection = false;
+	Animator animator;
 
-    Animator animator;
+	EventSystem eventSystem;
 
-    EventSystem eventSystem;
+	Button continueButton;
+	Button newGameButton;
+	Button optionsButton;
+	Button exitButton;
+	Button backButton;
+	Button yesButton;
+	Button noButton;
 
-    Button continueButton;
-    Button newGameButton;
-    Button optionsButton;
-    Button exitButton;
-    Button backButton;
-    Button yesButton;
-    Button noButton;
+	Slider musicVolumeSlider;
+	Slider sfxVolumeSlider;
 
-    Slider musicVolumeSlider;
-    Slider sfxVolumeSlider;
-
-    PlayerController granny;
+	PlayerController granny;
 
 	LevelEntry[] levelEntries;
 
-    void Start()
-    {
-        animator = GetComponent<Animator>();
+	void Start()
+	{
+		animator = GetComponent<Animator>();
 
-        eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
+		eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
 
-        continueButton = GameObject.Find("Panel/Main/ContinueButton").GetComponent<Button>();
-        continueButton.onClick.AddListener(ContinueGame);
+		continueButton = GameObject.Find("Panel/Main/ContinueButton").GetComponent<Button>();
+		continueButton.onClick.AddListener(ContinueGame);
 
-        newGameButton = GameObject.Find("Panel/Main/NewGameButton").GetComponent<Button>();
-        newGameButton.onClick.AddListener(NewGame);
+		newGameButton = GameObject.Find("Panel/Main/NewGameButton").GetComponent<Button>();
+		newGameButton.onClick.AddListener(NewGame);
 
-        optionsButton = GameObject.Find("Panel/Main/OptionsButton").GetComponent<Button>();
-        optionsButton.onClick.AddListener(EnterOptions);
+		optionsButton = GameObject.Find("Panel/Main/OptionsButton").GetComponent<Button>();
+		optionsButton.onClick.AddListener(EnterOptions);
 
-        exitButton = GameObject.Find("Panel/Main/ExitButton").GetComponent<Button>();
-        exitButton.onClick.AddListener(Exit);
+		exitButton = GameObject.Find("Panel/Main/ExitButton").GetComponent<Button>();
+		exitButton.onClick.AddListener(Exit);
 
-        backButton = GameObject.Find("Panel/Options/BackButton").GetComponent<Button>();
-        backButton.onClick.AddListener(LeaveOptions);
+		backButton = GameObject.Find("Panel/Options/BackButton").GetComponent<Button>();
+		backButton.onClick.AddListener(LeaveOptions);
 
-        yesButton = GameObject.Find("Panel/Override/YesButton").GetComponent<Button>();
-        yesButton.onClick.AddListener(ConfirmOverride);
+		yesButton = GameObject.Find("Panel/Override/YesButton").GetComponent<Button>();
+		yesButton.onClick.AddListener(ConfirmOverride);
 
-        noButton = GameObject.Find("Panel/Override/NoButton").GetComponent<Button>();
-        noButton.onClick.AddListener(CancelOverride);
+		noButton = GameObject.Find("Panel/Override/NoButton").GetComponent<Button>();
+		noButton.onClick.AddListener(CancelOverride);
 
-        musicVolumeSlider = GameObject.Find("Panel/Options/MusicSlider").GetComponent<Slider>();
-        musicVolumeSlider.onValueChanged.AddListener(Utils.ChangeMusicVolume);
+		musicVolumeSlider = GameObject.Find("Panel/Options/MusicSlider").GetComponent<Slider>();
+		musicVolumeSlider.onValueChanged.AddListener(Utils.ChangeMusicVolume);
 
-        sfxVolumeSlider = GameObject.Find("Panel/Options/SFXSlider").GetComponent<Slider>();
-        sfxVolumeSlider.onValueChanged.AddListener(Utils.ChangeSfxVolume);
+		sfxVolumeSlider = GameObject.Find("Panel/Options/SFXSlider").GetComponent<Slider>();
+		sfxVolumeSlider.onValueChanged.AddListener(Utils.ChangeSfxVolume);
 
-        granny = GameObject.Find("Granny").GetComponent<PlayerController>();
+		granny = GameObject.Find("Granny").GetComponent<PlayerController>();
 
 		PlayerController.IsAttacking = false; //quick fix
 
 		levelEntries = GameObject.FindObjectsOfType<LevelEntry>();
 
-        if (GameProgress.instance.level == 0)
-        {
-            continueButton.interactable = false;
-        }
+		if (GameProgress.Instance.Level == 0)
+		{
+			continueButton.interactable = false;
+		}
 
-        if (showLevelSelection)
-        {
-            animator.SetBool("LevelSelect", true);
-            animator.CrossFade("MainLevelSelect", 0.0f);
+		if (ShowLevelSelection)
+		{
+			animator.SetBool("LevelSelect", true);
+			animator.CrossFade("MainLevelSelect", 0.0f);
 
-            granny.isControllable = true;
-        }
-        else
-        {
-            granny.isControllable = false;
+			granny.IsControllable = true;
+		}
+		else
+		{
+			granny.IsControllable = false;
 
-            selectLeftButton();
-        }
-    }
-        
-    public void LoadGame(string level)
-    {
-        Application.LoadLevel(level);
-    }
-        
-    public void Exit()
-    {
-        Application.Quit();
-    }
+			selectLeftButton();
+		}
+	}
 
-    public void EnterOptions()
-    {
-        musicVolumeSlider.value = Options.instance.MusicVolume;
-        sfxVolumeSlider.value = Options.instance.SfxVolume;
+	public void LoadGame(string level)
+	{
+		Application.LoadLevel(level);
+	}
 
-        animator.SetBool("Options", true);
+	public void Exit()
+	{
+		Application.Quit();
+	}
 
-        Utils.Select(backButton);
-    }
+	public void EnterOptions()
+	{
+		musicVolumeSlider.value = Options.Instance.MusicVolume;
+		sfxVolumeSlider.value = Options.Instance.SfxVolume;
 
-    public void LeaveOptions()
-    {
-        SaveGame.Save();
+		animator.SetBool("Options", true);
 
-        animator.SetBool("Options", false);
+		Utils.Select(backButton);
+	}
 
-        Utils.Select(optionsButton);
-    }
+	public void LeaveOptions()
+	{
+		SaveGame.Save();
 
-    public void ContinueGame()
-    {
-        InitLevelSelect();
-    }
+		animator.SetBool("Options", false);
 
-    public void NewGame()
-    {
-        bool gameExists = GameProgress.instance.level > 0;
+		Utils.Select(optionsButton);
+	}
 
-        if (gameExists)
-        {
-            animator.SetBool("Override", true);
-            Utils.Select(noButton);
-        }
-        else
-        {
-            InitNewgame();
-            InitLevelSelect();
-        }
+	public void ContinueGame()
+	{
+		InitLevelSelect();
+	}
 
-    }
+	public void NewGame()
+	{
+		bool gameExists = GameProgress.Instance.Level > 0;
 
-    void InitNewgame()
-    {
-        GameProgress.instance.level = 1;
+		if (gameExists)
+		{
+			animator.SetBool("Override", true);
+			Utils.Select(noButton);
+		}
+		else
+		{
+			initNewgame();
+			InitLevelSelect();
+		}
+	}
 
-        SaveGame.Save();
-    }
+	void initNewgame()
+	{
+		GameProgress.Instance.Level = 1;
 
-    void InitLevelSelect()
-    {
-        animator.SetBool("LevelSelect", true);
+		SaveGame.Save();
+	}
 
-        granny.isControllable = true;
+	void InitLevelSelect()
+	{
+		animator.SetBool("LevelSelect", true);
 
-        updateLevelEntries();
-    }
+		granny.IsControllable = true;
 
-    void updateLevelEntries()
-    {
-        foreach (var levelEntry in levelEntries)
-        {
-            levelEntry.UpdateEnabled();
-        }
-    }
+		updateLevelEntries();
+	}
 
-    public void ConfirmOverride()
-    {
-        animator.SetBool("LevelSelect", true);
+	void updateLevelEntries()
+	{
+		foreach (var levelEntry in levelEntries)
+		{
+			levelEntry.UpdateEnabled();
+		}
+	}
 
-        InitNewgame();
-        InitLevelSelect();
-    }
+	public void ConfirmOverride()
+	{
+		animator.SetBool("LevelSelect", true);
 
-    public void CancelOverride()
-    {
-        animator.SetBool("Override", false);
+		initNewgame();
+		InitLevelSelect();
+	}
 
-        Utils.Select(newGameButton);
-    }
-        
-    public void CancelLevelSelect()
-    {
-        animator.SetBool("LevelSelect", false);
-        animator.SetBool("Override", false);
+	public void CancelOverride()
+	{
+		animator.SetBool("Override", false);
 
-        granny.isControllable = false;
+		Utils.Select(newGameButton);
+	}
 
-        if (GameProgress.instance.level > 0)
-        {
-            continueButton.interactable = true;
-        }
+	public void CancelLevelSelect()
+	{
+		animator.SetBool("LevelSelect", false);
+		animator.SetBool("Override", false);
 
-        Utils.Select(continueButton);
-    }
+		granny.IsControllable = false;
 
-    void handleBackKey()
-    {
-        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+		if (GameProgress.Instance.Level > 0)
+		{
+			continueButton.interactable = true;
+		}
 
-        if (currentState.IsName("MainOptions"))
-        {
-            LeaveOptions();
-        }
-        else if (currentState.IsName("MainOverride"))
-        {
-            CancelOverride();
-        }
-        else if (currentState.IsName("Main"))
-        {
-            if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
-            {
-                Exit();
-            }
-            else
-            {
-                Utils.Select(exitButton);
-            }
-        }
-        else if (currentState.IsName("MainLevelSelect"))
-        {
-            CancelLevelSelect();
-        }
-    }
+		Utils.Select(continueButton);
+	}
 
-    void selectLeftButton()
-    {
-        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+	void handleBackKey()
+	{
+		var currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (currentState.IsName("MainOptions"))
-        {
-            Utils.Select(backButton);
-        }
-        else if (currentState.IsName("MainOverride"))
-        {
-            Utils.Select(yesButton); 
-        }
-        else if (currentState.IsName("Main"))
-        {
-            if (GameProgress.instance.level == 0)
-            {
-                Utils.Select(newGameButton);
-            }
-            else
-            {
-                Utils.Select(continueButton);
-            }
-        }
-    }
+		if (currentState.IsName("MainOptions"))
+		{
+			LeaveOptions();
+		}
+		else if (currentState.IsName("MainOverride"))
+		{
+			CancelOverride();
+		}
+		else if (currentState.IsName("Main"))
+		{
+			if (eventSystem.currentSelectedGameObject == exitButton.gameObject)
+			{
+				Exit();
+			}
+			else
+			{
+				Utils.Select(exitButton);
+			}
+		}
+		else if (currentState.IsName("MainLevelSelect"))
+		{
+			CancelLevelSelect();
+		}
+	}
 
-    void selectRightButton()
-    {
-        var currentState = animator.GetCurrentAnimatorStateInfo(0);
+	void selectLeftButton()
+	{
+		var currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (currentState.IsName("MainOptions"))
-        {
-            Utils.Select(backButton);
-        }
-        else if (currentState.IsName("MainOverride"))
-        {
-            Utils.Select(noButton); 
-        }
-        else if (currentState.IsName("Main"))
-        {
-            Utils.Select(exitButton);
-        }
-    }
+		if (currentState.IsName("MainOptions"))
+		{
+			Utils.Select(backButton);
+		}
+		else if (currentState.IsName("MainOverride"))
+		{
+			Utils.Select(yesButton); 
+		}
+		else if (currentState.IsName("Main"))
+		{
+			if (GameProgress.Instance.Level == 0)
+			{
+				Utils.Select(newGameButton);
+			}
+			else
+			{
+				Utils.Select(continueButton);
+			}
+		}
+	}
 
-    void handleLostFocus()
-    {
-        float verticalAxis = Input.GetAxisRaw("Horizontal");
+	void selectRightButton()
+	{
+		var currentState = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (verticalAxis > 0)
-        {
-            selectLeftButton();
-        }
-        else if (verticalAxis < 0)
-        {
-            selectRightButton();
-        }
-    }
+		if (currentState.IsName("MainOptions"))
+		{
+			Utils.Select(backButton);
+		}
+		else if (currentState.IsName("MainOverride"))
+		{
+			Utils.Select(noButton); 
+		}
+		else if (currentState.IsName("Main"))
+		{
+			Utils.Select(exitButton);
+		}
+	}
 
-    void Update()
-    {
-        if (Input.GetButtonUp("Cancel"))
-        {
-            handleBackKey();
-        }
+	void handleLostFocus()
+	{
+		float verticalAxis = Input.GetAxisRaw("Horizontal");
 
-        if (eventSystem.currentSelectedGameObject == null)
-        {
-            handleLostFocus();   
-        }
+		if (verticalAxis > 0)
+		{
+			selectLeftButton();
+		}
+		else if (verticalAxis < 0)
+		{
+			selectRightButton();
+		}
+	}
 
-        #if UNITY_EDITOR
-        if (Input.GetKeyUp(KeyCode.S))
-        {
-            SaveGame.Save();
-        }
+	void Update()
+	{
+		if (Input.GetButtonUp("Cancel"))
+		{
+			handleBackKey();
+		}
 
-        if (Input.GetKeyUp(KeyCode.L))
-        {
-            SaveGame.Load();
-        }
+		if (eventSystem.currentSelectedGameObject == null)
+		{
+			handleLostFocus();   
+		}
 
-        if (Input.GetKeyUp(KeyCode.R))
-        {
-            GameProgress.instance.level = 0;
-        }
+		#if UNITY_EDITOR
+		if (Input.GetKeyUp(KeyCode.S))
+		{
+			SaveGame.Save();
+		}
 
-        if (Input.GetKeyUp(KeyCode.T))
-        {
-            GameProgress.instance.level = 1;
-        }
-        #endif
-    }
+		if (Input.GetKeyUp(KeyCode.L))
+		{
+			SaveGame.Load();
+		}
+
+		if (Input.GetKeyUp(KeyCode.R))
+		{
+			GameProgress.Instance.Level = 0;
+		}
+
+		if (Input.GetKeyUp(KeyCode.T))
+		{
+			GameProgress.Instance.Level = 1;
+		}
+		#endif
+	}
 }

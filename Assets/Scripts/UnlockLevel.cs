@@ -1,16 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class UnlockLevel : MonoBehaviour
 {
-    public uint level;
+	public uint Level;
 
-    public void Unlock()
-    {
-        if (level > GameProgress.instance.level)
-        {
-            GameProgress.instance.level = level;
-            SaveGame.Save();
-        }
-    }
+	public void Unlock()
+	{
+		if (Level > GameProgress.Instance.Level)
+		{
+			GameProgress.Instance.Level = Level;
+			SaveGame.Save();
+		}
+	}
 }

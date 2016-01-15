@@ -1,162 +1,164 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class KidController : MonoBehaviour
 {
+	public float MaxSpeed = 11;
+	public float ViewRange = 105;
+	public bool HasChocolate = false;
 
-    #region Variables
-    public float MaxSpeed = 11;
-    private float ViewRange = 105;
-    public bool HasChocolate = false;
+	public static int AmountOfKids = 0;
+	public static int AmountOfSlows = 0;
+	public static int AmountOfRunthroughs = 0;
 
-    public static int AmountOfKids = 0;
-    public static int AmountOfSlows = 0;
-    public static int AmountOfRunthroughs = 0;
+	public GameObject LArm;
+	public GameObject RArm;
+	public GameObject LFoot;
+	public GameObject RFoot;
 
-    public GameObject LArm;
-    public GameObject RArm;
-    public GameObject LFoot;
-    public GameObject RFoot;
-    private SimpleCCD AnglesLArm;
-    private SimpleCCD AnglesRArm;
-    private SimpleCCD AnglesLFoot;
-    private SimpleCCD AnglesRFoot;
+	SimpleCCD anglesLArm;
+	SimpleCCD anglesRArm;
+	SimpleCCD anglesLFoot;
+	SimpleCCD anglesRFoot;
 
-    [HideInInspector]
-    public bool IsLookingRight = true;
-    private Rigidbody2D myRigidbody2D;
-    private Animator animator;
+	[HideInInspector]
+	public bool IsLookingRight = true;
 
-    PlayerController chasedController;
+	Rigidbody2D myRigidbody2D;
+	Animator animator;
 
-    public Transform ChasedObject;
-    public Vector2 GrannyPos;
-    public float distanceToGranny;
-    #endregion
+	PlayerController chasedController;
 
-    void Start()
-    {
-        AmountOfKids++;
-        AnglesLArm = LArm.GetComponent<SimpleCCD>();
-        AnglesRArm = RArm.GetComponent<SimpleCCD>();
-        AnglesLFoot = LFoot.GetComponent<SimpleCCD>();
-        AnglesRFoot = RFoot.GetComponent<SimpleCCD>();
-        myRigidbody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+	public Transform ChasedObject;
+	public Vector2 GrannyPos;
+	public float DistanceToGranny;
 
-        chasedController = ChasedObject.GetComponent<PlayerController>();
+	void Start()
+	{
+		AmountOfKids++;
 
-    }
+		anglesLArm = LArm.GetComponent<SimpleCCD>();
+		anglesRArm = RArm.GetComponent<SimpleCCD>();
+		anglesLFoot = LFoot.GetComponent<SimpleCCD>();
+		anglesRFoot = RFoot.GetComponent<SimpleCCD>();
 
-    void FixedUpdate()
-    {
-        GrannyPos = ChasedObject.position;
-        GrannyPos.y += 8.2f; 
+		myRigidbody2D = GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
 
-        AmountOfRunthroughs++;
+		chasedController = ChasedObject.GetComponent<PlayerController>();
+	}
 
-        //HoldsChocolate -> Stop
-        if (HasChocolate)
-        {
-            animator.SetBool("Grab", false);
-            animator.SetBool("HasChocolate", true);
-            animator.SetFloat("Speed", 0);
-            myRigidbody2D.velocity = new Vector2(0, 0);
-        }
-        else
-        {
-            //Walking
-            GrabControl();
-            CalculateDistance();
-            WalkController();
+	void FixedUpdate()
+	{
+		GrannyPos = ChasedObject.position;
+		GrannyPos.y += 8.2f; 
 
-            animator.SetFloat("Speed", Mathf.Abs(myRigidbody2D.velocity.x));
-            if ((myRigidbody2D.velocity.x > 0 && !IsLookingRight) || (myRigidbody2D.velocity.x < 0 && IsLookingRight))
-            {
-                Flip();
-            }
-        }
-        //Slowing
-        chasedController.CalculateSlow(AmountOfSlows, gameObject);
+		AmountOfRunthroughs++;
 
-        //Reset per TimeIntervall
-        if (AmountOfRunthroughs == AmountOfKids)
-        {
-            AmountOfSlows = 0;
-            AmountOfRunthroughs = 0;
-        }
-    }
+		//HoldsChocolate -> Stop
+		if (HasChocolate)
+		{
+			animator.SetBool("Grab", false);
+			animator.SetBool("HasChocolate", true);
+			animator.SetFloat("Speed", 0);
+			myRigidbody2D.velocity = new Vector2(0, 0);
+		}
+		else
+		{
+			//Walking
+			controlGrabbing();
+			calculateDistance();
+			controlWalking();
 
-    void WalkController()
-    {
-		if (Mathf.Abs(distanceToGranny) < ViewRange && Mathf.Abs(transform.position.x - GrannyPos.x) > 2 && !HasChocolate)
-        {
-            myRigidbody2D.velocity = new Vector2(distanceToGranny < 0 ? MaxSpeed * 3 : -MaxSpeed * 3, myRigidbody2D.velocity.y);
-        }
-        else
-        {
-            myRigidbody2D.velocity = new Vector2(0, 0);
-        }
-    }
+			animator.SetFloat("Speed", Mathf.Abs(myRigidbody2D.velocity.x));
+			if ((myRigidbody2D.velocity.x > 0 && !IsLookingRight) || (myRigidbody2D.velocity.x < 0 && IsLookingRight))
+			{
+				flip();
+			}
+		}
+		//Slowing
+		chasedController.CalculateSlow(AmountOfSlows, gameObject);
 
-    void GrabControl()
-    {
+		//Reset per TimeIntervall
+		if (AmountOfRunthroughs == AmountOfKids)
+		{
+			AmountOfSlows = 0;
+			AmountOfRunthroughs = 0;
+		}
+	}
 
-        if (Mathf.Abs(distanceToGranny) < 5)
-        {
-            animator.SetBool("Grab", true);
-            MaxSpeed = 4;
-            AmountOfSlows++;
-            ChasedObject.GetComponent<ItemUse>().slowCollider = GetComponent<Collider2D>();
-        }
-        else
-        {
-            animator.SetBool("Grab", false);
-            MaxSpeed = 11;
-        }
-    }
+	void controlWalking()
+	{
+		if (Mathf.Abs(DistanceToGranny) < ViewRange && Mathf.Abs(transform.position.x - GrannyPos.x) > 2 && !HasChocolate)
+		{
+			myRigidbody2D.velocity = new Vector2(DistanceToGranny < 0 ? MaxSpeed * 3 : -MaxSpeed * 3, myRigidbody2D.velocity.y);
+		}
+		else
+		{
+			myRigidbody2D.velocity = new Vector2(0, 0);
+		}
+	}
 
-    void CalculateDistance()
-    {
-        if ((transform.position.x - GrannyPos.x) > 0)
-        {
-            distanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
-        }
-        else
-        {
-            distanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
-        }
-    }
+	void controlGrabbing()
+	{
+		if (Mathf.Abs(DistanceToGranny) < 5)
+		{
+			animator.SetBool("Grab", true);
 
-    void Flip()
-    {
-        IsLookingRight = !IsLookingRight;
+			MaxSpeed = 4;
 
-        Vector3 myAngles = transform.localEulerAngles;
-        myAngles.y += 180;
-        transform.localEulerAngles = myAngles;
+			AmountOfSlows++;
 
-        if (!IsLookingRight)
-        {
-            AnglesLArm.angleLimits[0].min = 210;
-            AnglesLArm.angleLimits[0].max = 360;
-            AnglesRArm.angleLimits[0].min = 210;
-            AnglesRArm.angleLimits[0].max = 360;
-            AnglesLFoot.angleLimits[0].min = 1;
-            AnglesLFoot.angleLimits[0].max = 90;
-            AnglesRFoot.angleLimits[0].min = 1;
-            AnglesRFoot.angleLimits[0].max = 90;
-        }
-        else
-        {
-            AnglesLArm.angleLimits[0].min = 1;
-            AnglesLArm.angleLimits[0].max = 150;
-            AnglesRArm.angleLimits[0].min = 1;
-            AnglesRArm.angleLimits[0].max = 150;
-            AnglesLFoot.angleLimits[0].min = 250;
-            AnglesLFoot.angleLimits[0].max = 360;
-            AnglesRFoot.angleLimits[0].min = 250;
-            AnglesRFoot.angleLimits[0].max = 360;
-        }
-    }
+			ChasedObject.GetComponent<ItemUse>().SlowCollider = GetComponent<Collider2D>();
+		}
+		else
+		{
+			animator.SetBool("Grab", false);
+
+			MaxSpeed = 11;
+		}
+	}
+
+	void calculateDistance()
+	{
+		if ((transform.position.x - GrannyPos.x) > 0)
+		{
+			DistanceToGranny = Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
+		}
+		else
+		{
+			DistanceToGranny = -Mathf.Sqrt(Mathf.Pow((transform.position.x - GrannyPos.x), 2) + Mathf.Pow((transform.position.y - GrannyPos.y), 2));
+		}
+	}
+
+	void flip()
+	{
+		IsLookingRight = !IsLookingRight;
+
+		Vector3 myAngles = transform.localEulerAngles;
+		myAngles.y += 180;
+		transform.localEulerAngles = myAngles;
+
+		if (!IsLookingRight)
+		{
+			anglesLArm.angleLimits[0].min = 210;
+			anglesLArm.angleLimits[0].max = 360;
+			anglesRArm.angleLimits[0].min = 210;
+			anglesRArm.angleLimits[0].max = 360;
+			anglesLFoot.angleLimits[0].min = 1;
+			anglesLFoot.angleLimits[0].max = 90;
+			anglesRFoot.angleLimits[0].min = 1;
+			anglesRFoot.angleLimits[0].max = 90;
+		}
+		else
+		{
+			anglesLArm.angleLimits[0].min = 1;
+			anglesLArm.angleLimits[0].max = 150;
+			anglesRArm.angleLimits[0].min = 1;
+			anglesRArm.angleLimits[0].max = 150;
+			anglesLFoot.angleLimits[0].min = 250;
+			anglesLFoot.angleLimits[0].max = 360;
+			anglesRFoot.angleLimits[0].min = 250;
+			anglesRFoot.angleLimits[0].max = 360;
+		}
+	}
 }

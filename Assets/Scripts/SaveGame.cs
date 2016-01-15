@@ -4,55 +4,53 @@ using System.IO;
 
 public static class SaveGame
 {
-    static string path;
+	static string path;
 
-    [System.Serializable]
-    class PersistentData
-    {
-        uint level;
-        float musicVolume;
-        float sfxVolume;
+	[System.Serializable]
+	class PersistentData
+	{
+		uint level;
+		float musicVolume;
+		float sfxVolume;
 
-        public PersistentData()
-        {
-            level = GameProgress.instance.level;
-            musicVolume = Options.instance.MusicVolume;
-            sfxVolume = Options.instance.SfxVolume;
-        }
+		public PersistentData()
+		{
+			level = GameProgress.Instance.Level;
+			musicVolume = Options.Instance.MusicVolume;
+			sfxVolume = Options.Instance.SfxVolume;
+		}
 
-        public void Set()
-        {
-            GameProgress.instance.level = level;
-            Options.instance.MusicVolume = musicVolume;
-            Options.instance.SfxVolume = sfxVolume;
-        }
-    }
+		public void Set()
+		{
+			GameProgress.Instance.Level = level;
+			Options.Instance.MusicVolume = musicVolume;
+			Options.Instance.SfxVolume = sfxVolume;
+		}
+	}
 
-    static SaveGame()
-    {
-        path = Path.Combine(Application.persistentDataPath, "saveGame.dat");
-    }
+	static SaveGame()
+	{
+		path = Path.Combine(Application.persistentDataPath, "saveGame.dat");
+	}
 
-    public static void Save()
-    {
-        var data = new PersistentData();
-        var bf = new BinaryFormatter();
-        var file = File.Create(path);
-        bf.Serialize(file, data);
-        file.Close();
-    }
+	public static void Save()
+	{
+		var data = new PersistentData();
+		var binaryFormatter = new BinaryFormatter();
+		var file = File.Create(path);
+		binaryFormatter.Serialize(file, data);
+		file.Close();
+	}
 
-    public static void Load()
-    {
-        if (File.Exists(path))
-        {
-            var bf = new BinaryFormatter();
-            var file = File.Open(path, FileMode.Open);
-            var data = (PersistentData)bf.Deserialize(file);
-            file.Close();
-            data.Set();
-        }
-    }
+	public static void Load()
+	{
+		if (File.Exists(path))
+		{
+			var binaryFormatter = new BinaryFormatter();
+			var file = File.Open(path, FileMode.Open);
+			var data = (PersistentData)binaryFormatter.Deserialize(file);
+			file.Close();
+			data.Set();
+		}
+	}
 }
-
-

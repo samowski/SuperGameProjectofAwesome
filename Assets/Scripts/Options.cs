@@ -4,11 +4,11 @@ using System.Collections;
 
 public class Options : MonoBehaviour
 {
-    public static Options instance;
+    public static Options Instance;
 
     public float musicVolume;
     public float sfxVolume;
-    public AudioMixer audioMixer;
+    public AudioMixer Mixer;
 
     public float MusicVolume
     {
@@ -19,7 +19,7 @@ public class Options : MonoBehaviour
         set
         {
             musicVolume = value;
-            audioMixer.SetFloat("musicVolume", toDb(value));
+            Mixer.SetFloat("musicVolume", toDb(value));
         }
     }
 
@@ -32,12 +32,10 @@ public class Options : MonoBehaviour
         set
         {
             sfxVolume = value;
-            audioMixer.SetFloat("sfxVolume", toDb(value));
+            Mixer.SetFloat("sfxVolume", toDb(value));
         }
     }
-
-
-
+		
     static float toDb(float value)
     {
         if (value <= 0.0f)
@@ -53,9 +51,9 @@ public class Options : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {

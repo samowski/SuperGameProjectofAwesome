@@ -1,46 +1,46 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class SmoothCamera : MonoBehaviour
 {
-    public float DampTime = 0.15f;
+	public float DampTime = 0.15f;
 
-    public Transform target;
-    public Vector3 offset;
+	public Transform Target;
+	public Vector3 Offset;
 
-    public Transform leftBorder;
-    public Transform rightBorder;
-    public Transform topBorder;
-    public Transform bottomBorder;
+	public Transform LeftBorder;
+	public Transform RightBorder;
+	public Transform TopBorder;
+	public Transform BottomBorder;
 
-    Vector3 velocity = Vector3.zero;
-    Camera followCamera;
+	Vector3 velocity = Vector3.zero;
 
-    void Start()
-    {
-        followCamera = GetComponent<Camera>();
-    }
+	Camera followCamera;
 
-    void FixedUpdate()
-    {
-        Vector3 targetPosition = target.position;
-        targetPosition += offset;
-        if (target)
-        {
-            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, DampTime);
+	void Start()
+	{
+		followCamera = GetComponent<Camera>();
+	}
 
-            float halfCameraWidth = followCamera.orthographicSize * followCamera.aspect;
-            float halfCameraHeight = followCamera.orthographicSize;
+	void FixedUpdate()
+	{
+		Vector3 targetPosition = Target.position + Offset;
 
-            float x = Mathf.Clamp(transform.position.x,
-                leftBorder != null ? leftBorder.position.x + halfCameraWidth : float.NegativeInfinity,
-                rightBorder != null ?  rightBorder.position.x - halfCameraWidth : float.PositiveInfinity);
+		if (Target)
+		{
+			transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, DampTime);
 
-            float y = Mathf.Clamp(transform.position.y,
-                bottomBorder != null ? bottomBorder.position.y + halfCameraHeight : float.NegativeInfinity,
-                topBorder != null ?  topBorder.position.y - halfCameraHeight : float.PositiveInfinity);
+			float halfCameraWidth = followCamera.orthographicSize * followCamera.aspect;
+			float halfCameraHeight = followCamera.orthographicSize;
 
-            transform.position = new Vector3(x, y, transform.position.z);
-        }
-    }
+			float clampedX = Mathf.Clamp(transform.position.x,
+				LeftBorder != null ? LeftBorder.position.x + halfCameraWidth : float.NegativeInfinity,
+				RightBorder != null ? RightBorder.position.x - halfCameraWidth : float.PositiveInfinity);
+
+			float clampedY = Mathf.Clamp(transform.position.y,
+				BottomBorder != null ? BottomBorder.position.y + halfCameraHeight : float.NegativeInfinity,
+				TopBorder != null ? TopBorder.position.y - halfCameraHeight : float.PositiveInfinity);
+
+			transform.position = new Vector3(clampedX, clampedY, transform.position.z);
+		}
+	}
 }

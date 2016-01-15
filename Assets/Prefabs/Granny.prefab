@@ -970,7 +970,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd311315828f62c47b3bbc85969f6691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  Damage: 1
 --- !u!114 &11468716
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1028,7 +1028,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294960383
   IsLookingRight: 1
-  isControllable: 1
+  IsControllable: 1
 --- !u!212 &21209112
 SpriteRenderer:
   m_ObjectHideFlags: 1
